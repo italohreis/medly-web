@@ -22,16 +22,15 @@ export function useLogin() {
             const response = await authService.login(data);
             authService.setSession(response.token, response.role);
 
-            // SWITCH CASE ROBUSTO
             switch (response.role) {
                 case 'ADMIN':
-                    navigate('/admin'); // Vai cair no AdminDashboard
+                    navigate('/admin'); 
                     break;
                 case 'DOCTOR':
-                    navigate('/doctor'); // Vai cair no DoctorSchedule
+                    navigate('/doctor'); 
                     break;
                 case 'PATIENT':
-                    navigate('/patient'); // Vai cair no PatientHome
+                    navigate('/patient'); 
                     break;
                 default:
                     navigate('/');
