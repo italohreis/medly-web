@@ -1,35 +1,41 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { Login } from './pages/auth/Login';
+import { AdminDashboard } from './pages/admin/AdminDashboard';
+import { DoctorSchedule } from './pages/doctor/DoctorSchedule';
+import { PatientHome } from './pages/patient/PatientHome';
+import { PrivateRoute } from './components/PrivateRoute';
+import { ToastProvider } from './contexts/ToastContext';
 
-function App() {
-  const [count, setCount] = useState(0)
-
+export default function App() {
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <BrowserRouter>
+      <ToastProvider>
+        <Routes>
+          {/* Rota Pública */}
+          <Route path="/" element={<Login />} />
 
-export default App
+          {/* Rotas de ADMIN */}
+          {/* Só passa aqui se tiver token E a role for ADMIN */}
+          <Route element={<PrivateRoute allowedRoles={['ADMIN']} />}>
+            <Route path="/admin" element={<AdminDashboard />} />
+            {/* Futuro: <Route path="/admin/doctors" element={<DoctorsList />} /> */}
+          </Route>
+
+          {/* Rotas de DOCTOR */}
+          <Route element={<PrivateRoute allowedRoles={['DOCTOR']} />}>
+            <Route path="/doctor" element={<DoctorSchedule />} />
+          </Route>
+
+          {/* Rotas de PATIENT */}
+          <Route element={<PrivateRoute allowedRoles={['PATIENT']} />}>
+            <Route path="/patient" element={<PatientHome />} />
+            {/* Futuro: <Route path="/patient/appointments" element={<MyAppointments />} /> */}
+          </Route>
+
+          {/* Rota para qualquer URL desconhecida -> vai pro login */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </ToastProvider>
+    </BrowserRouter>
+  );
+}
