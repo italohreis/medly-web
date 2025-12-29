@@ -1,9 +1,11 @@
 import { useContext } from 'react';
 import { createContext } from 'react';
+import type { UserProfile } from '../types/user';
 
 interface User {
     token: string;
     role: 'ADMIN' | 'DOCTOR' | 'PATIENT';
+    profile?: UserProfile;
 }
 
 interface AuthContextData {
@@ -12,6 +14,7 @@ interface AuthContextData {
     isLoading: boolean;
     login: (token: string, role: string) => void;
     logout: () => void;
+    loadProfile: () => Promise<void>;
 }
 
 export const AuthContext = createContext<AuthContextData>({} as AuthContextData);

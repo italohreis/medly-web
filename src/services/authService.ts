@@ -1,5 +1,6 @@
 import { api } from './api';
 import type { AuthRequest, AuthResponse } from '../types/auth.ts';
+import type { UserProfile } from '../types/user';
 
 interface RegisterRequest {
     name: string;
@@ -31,6 +32,11 @@ const getToken = () => localStorage.getItem('medly_token');
 
 const getRole = () => localStorage.getItem('medly_role');
 
+const getMyProfile = async (): Promise<UserProfile> => {
+    const response = await api.get<UserProfile>('/users/me');
+    return response.data;
+};
+
 const logout = () => {
     localStorage.removeItem('medly_token');
     localStorage.removeItem('medly_role');
@@ -42,5 +48,6 @@ export const authService = {
     setSession,
     getToken,
     getRole,
+    getMyProfile,
     logout
 };
