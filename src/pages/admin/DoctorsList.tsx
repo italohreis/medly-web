@@ -14,6 +14,7 @@ export function DoctorsList() {
     const { showToast } = useToast();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [editingDoctor, setEditingDoctor] = useState<typeof doctors[0] | null>(null);
 
     const handleCreateDoctor = async (data: DoctorFormData) => {
         setIsSubmitting(true);
@@ -28,6 +29,56 @@ export function DoctorsList() {
         } finally {
             setIsSubmitting(false);
         }
+    };
+
+    const handleUpdateDoctor = async (data: DoctorFormData) => {
+        if (!editingDoctor) return;
+        setIsSubmitting(true);
+        try {
+            const updateData: Partial<Pick<typeof doctors[0], 'name' | 'email' | 'specialty'>> = {};
+            if (data.name) updateData.name = data.name;
+            if (data.email) updateData.email = data.email;
+            if (data.specialty) updateData.specialty = data.specialty;
+
+            await adminService.updateDoctor(String(editingDoctor.id), updateData);
+            showToast('Médico atualizado com sucesso!', 'success');
+            setIsModalOpen(false);
+            setEditingDoctor(null);
+            refetch();
+        } catch (error) {
+            console.error('Erro ao atualizar médico:', error);
+            showToast('Erro ao atualizar médico. Tente novamente.', 'error');
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+    const handleDeleteDoctor = async (id: string, name: string) => {
+        if (!confirm(`Tem certeza que deseja excluir o médico ${name}?`)) return;
+
+        try {
+            await adminService.deleteDoctor(id);
+            showToast('Médico excluído com sucesso!', 'success');
+            refetch();
+        } catch (error) {
+            console.error('Erro ao excluir médico:', error);
+            showToast('Erro ao excluir médico. Tente novamente.', 'error');
+        }
+    };
+
+    const openEditModal = (doctor: typeof doctors[0]) => {
+        setEditingDoctor(doctor);
+        setIsModalOpen(true);
+    };
+
+    const openCreateModal = () => {
+        setEditingDoctor(null);
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setEditingDoctor(null);
     };
 
     return (
@@ -49,7 +100,7 @@ export function DoctorsList() {
                             {totalElements} médicos cadastrados
                         </p>
                     </div>
-                    <Button variant="primary" size="md" onClick={() => setIsModalOpen(true)}>
+                    <Button variant="primary" size="md" onClick={openCreateModal}>
                         Novo Médico
                     </Button>
                 </div>
@@ -120,12 +171,20 @@ export function DoctorsList() {
                                             <td className="px-6 py-4 text-sm text-medical-600">{doctor.crm}</td>
                                             <td className="px-6 py-4 text-sm text-medical-600">{doctor.email || '-'}</td>
                                             <td className="px-6 py-4 text-right">
-                                                <Link
-                                                    to={`/admin/doctors/${doctor.id}`}
-                                                    className="text-primary-600 hover:text-primary-700 font-medium text-sm"
-                                                >
-                                                    Ver detalhes
-                                                </Link>
+                                                <div className="flex items-center justify-end gap-3">
+                                                    <button
+                                                        onClick={() => openEditModal(doctor)}
+                                                        className="text-primary-600 hover:text-primary-700 font-medium text-sm"
+                                                    >
+                                                        Editar
+                                                    </button>
+                                                    <button
+                                                        onClick={() => handleDeleteDoctor(String(doctor.id), doctor.name)}
+                                                        className="text-red-600 hover:text-red-700 font-medium text-sm"
+                                                    >
+                                                        Excluir
+                                                    </button>
+                                                </div>
                                             </td>
                                         </tr>
                                     ))
@@ -146,8 +205,10 @@ export function DoctorsList() {
 
             <DoctorModal
                 isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
-                onSubmit={handleCreateDoctor}
+                onClose={closeModal}
+                onSubmit={editingDoctor ? handleUpdateDoctor : handleCreateDoctor}
+                doctor={editingDoctor || undefined}
+                isEditMode={!!editingDoctor}
                 loading={isSubmitting}
             />
         </DashboardLayout>

@@ -5,14 +5,14 @@ export const adminService = {
     async getDashboardStats(): Promise<DashboardStats> {
         const [doctorsRes, patientsRes, appointmentsRes] = await Promise.all([
             api.get<PaginatedResponse<Doctor>>('/doctors?size=1'),
-            api.get<PaginatedResponse<Patient>>('/patients?size=1 '),
+            api.get<PaginatedResponse<Patient>>('/patients?size=1'),
             api.get<PaginatedResponse<Appointment>>('/appointments?size=1')
         ]);
 
         return {
-            doctors: doctorsRes.data.totalElements,
-            patients: patientsRes.data.totalElements,
-            appointments: appointmentsRes.data.totalElements
+            doctors: doctorsRes.data.page.totalElements,
+            patients: patientsRes.data.page.totalElements,
+            appointments: appointmentsRes.data.page.totalElements
         };
     },
 
@@ -54,5 +54,14 @@ export const adminService = {
     async createDoctor(data: Omit<Doctor, 'id'>): Promise<Doctor> {
         const response = await api.post<Doctor>('/doctors', data);
         return response.data;
+    },
+
+    async updateDoctor(id: string, data: Partial<Pick<Doctor, 'name' | 'email' | 'specialty'>>): Promise<Doctor> {
+        const response = await api.put<Doctor>(`/doctors/${id}`, data);
+        return response.data;
+    },
+
+    async deleteDoctor(id: string): Promise<void> {
+        await api.delete(`/doctors/${id}`);
     }
 };

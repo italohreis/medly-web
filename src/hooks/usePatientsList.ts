@@ -28,8 +28,8 @@ export function usePatientsList(pageSize: number = 10) {
 
     return {
         patients: data?.content || [],
-        totalPages: data?.totalPages || 0,
-        totalElements: data?.totalElements || 0,
+        totalPages: data?.page?.totalPages || 0,
+        totalElements: data?.page?.totalElements || 0,
         currentPage,
         loading,
         setCurrentPage

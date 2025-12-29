@@ -82,12 +82,7 @@ export function DoctorsTable({ doctors, loading }: DoctorsTableProps) {
                                     </td>
                                     <td className="px-6 py-4 text-sm text-medical-600">{doc.crm}</td>
                                     <td className="px-6 py-4 text-right">
-                                        <Link
-                                            to={`/admin/doctors/${doc.id}`}
-                                            className="text-primary-600 hover:text-primary-700 font-medium text-sm"
-                                        >
-                                            Ver detalhes
-                                        </Link>
+                                        <span className="text-medical-500 text-sm">-</span>
                                     </td>
                                 </tr>
                             ))
