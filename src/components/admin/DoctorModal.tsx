@@ -126,7 +126,7 @@ export function DoctorModal({ isOpen, onClose, onSubmit, loading, doctor, isEdit
                             <Input
                                 label="Senha"
                                 type="password"
-                                {...register('password', { 
+                                {...register('password', {
                                     required: 'Senha é obrigatória',
                                     minLength: {
                                         value: 6,
@@ -139,7 +139,7 @@ export function DoctorModal({ isOpen, onClose, onSubmit, loading, doctor, isEdit
                             <Input
                                 label="Confirmar Senha"
                                 type="password"
-                                {...register('confirmPassword', { 
+                                {...register('confirmPassword', {
                                     required: 'Confirmação de senha é obrigatória',
                                     validate: (value) => value === password || 'As senhas não coincidem'
                                 })}

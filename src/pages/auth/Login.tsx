@@ -1,6 +1,7 @@
 import { useLogin } from '../../hooks/useLogin';
 import { Input } from '../../components/ui/Input';
 import { Button } from '../../components/ui/Button';
+import { Link } from 'react-router-dom';
 
 export function Login() {
   const {
@@ -98,17 +99,19 @@ export function Login() {
               >
                 Entrar
               </Button>
-            </form>
 
-            {/* Divider */}
-            <div className="mt-6 pt-6 border-t border-medical-200">
-              <p className="text-center text-sm text-medical-500">
-                Não tem acesso?{' '}
-                <a href="#" className="text-primary-600 hover:text-primary-700 font-medium transition-colors">
-                  Cadastre-se
-                </a>
-              </p>
-            </div>
+              <div className="text-center pt-4">
+                <p className="text-sm text-medical-600">
+                  Não tem uma conta?{' '}
+                  <Link
+                    to="/register"
+                    className="font-medium text-primary-600 hover:text-primary-700 transition-colors"
+                  >
+                    Cadastre-se
+                  </Link>
+                </p>
+              </div>
+            </form>
           </div>
 
           {/* Security Badge */}

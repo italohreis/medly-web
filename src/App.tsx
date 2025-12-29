@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Login } from './pages/auth/Login';
+import { Register } from './pages/auth/Register';
 import { AdminDashboard } from './pages/admin/AdminDashboard';
 import { DoctorsList } from './pages/admin/DoctorsList';
 import { PatientsList } from './pages/admin/PatientsList';
@@ -16,8 +17,9 @@ export default function App() {
       <AuthProvider>
         <ToastProvider>
           <Routes>
-            {/* Rota Pública */}
+            {/* Rotas Públicas */}
             <Route path="/" element={<Login />} />
+            <Route path="/register" element={<Register />} />
 
             {/* Rotas de ADMIN */}
             <Route element={<PrivateRoute allowedRoles={['ADMIN']} />}>

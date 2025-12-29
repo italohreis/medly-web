@@ -1,6 +1,14 @@
 import { api } from './api';
 import type { AuthRequest, AuthResponse } from '../types/auth.ts';
 
+interface RegisterRequest {
+    name: string;
+    email: string;
+    password: string;
+    cpf: string;
+    birthDate: string;
+}
+
 const login = async (credentials: AuthRequest): Promise<AuthResponse> => {
     const response = await api.post<AuthResponse>('/auth/login', credentials);
 
@@ -8,6 +16,10 @@ const login = async (credentials: AuthRequest): Promise<AuthResponse> => {
     localStorage.setItem('medly_role', response.data.role);
 
     return response.data;
+};
+
+const register = async (data: RegisterRequest): Promise<void> => {
+    await api.post('/patients', data);
 };
 
 const setSession = (token: string, role: string) => {
@@ -26,6 +38,7 @@ const logout = () => {
 
 export const authService = {
     login,
+    register,
     setSession,
     getToken,
     getRole,
