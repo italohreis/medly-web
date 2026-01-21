@@ -1,14 +1,6 @@
 import { api } from './api';
-import type { AuthRequest, AuthResponse } from '../types/auth.ts';
+import type { AuthRequest, AuthResponse, RegisterRequest } from '../types/auth';
 import type { UserProfile } from '../types/user';
-
-interface RegisterRequest {
-    name: string;
-    email: string;
-    password: string;
-    cpf: string;
-    birthDate: string;
-}
 
 const login = async (credentials: AuthRequest): Promise<AuthResponse> => {
     const response = await api.post<AuthResponse>('/auth/login', credentials);

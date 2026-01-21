@@ -9,3 +9,11 @@ export interface AuthResponse {
   token: string;
   role: Role;
 }
+
+export interface RegisterRequest {
+  name: string;
+  email: string;
+  password: string;
+  cpf: string;
+  birthDate: string;
+}
