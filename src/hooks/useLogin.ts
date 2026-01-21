@@ -2,11 +2,13 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { authService } from '../services/authService.ts';
+import { useAuth } from './useAuth';
 import type { AuthRequest } from '../types/auth';
 import { AxiosError } from 'axios';
 
 export function useLogin() {
     const navigate = useNavigate();
+    const { login } = useAuth();
     const [apiError, setApiError] = useState('');
 
     const {
@@ -20,7 +22,8 @@ export function useLogin() {
 
         try {
             const response = await authService.login(data);
-            authService.setSession(response.token, response.role);
+            
+            login(response.token, response.role);
 
             switch (response.role) {
                 case 'ADMIN':
