@@ -12,9 +12,13 @@ export function useDoctorDashboard() {
   const [windows, setWindows] = useState<AvailabilityWindow[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const doctorId = user?.profile?.doctorProfile?.doctorId;
+
   const fetchDashboardData = useCallback(async () => {
-    const doctorId = user?.profile?.doctorProfile?.doctorId;
-    if (!doctorId) return;
+    if (!doctorId) {
+      setLoading(false);
+      return;
+    }
 
     try {
       setLoading(true);
@@ -32,7 +36,7 @@ export function useDoctorDashboard() {
     } finally {
       setLoading(false);
     }
-  }, [user?.profile?.doctorProfile?.doctorId, showToast]);
+  }, [doctorId, showToast]);
 
   const handleStatusChange = async (appointmentId: string, newStatus: 'COMPLETED' | 'CANCELLED') => {
     try {
@@ -82,6 +86,7 @@ export function useDoctorDashboard() {
     handleStatusChange,
     handleAddWindow,
     handleDeleteWindow,
+    refetch: fetchDashboardData,
     userName: user?.profile?.name
   };
 }

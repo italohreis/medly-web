@@ -5,7 +5,9 @@ import { AdminDashboard } from './pages/admin/AdminDashboard';
 import { DoctorsList } from './pages/admin/DoctorsList';
 import { PatientsList } from './pages/admin/PatientsList';
 import { AppointmentsList } from './pages/admin/AppointmentsList';
-import { DoctorSchedule } from './pages/doctor/DoctorSchedule';
+import { DoctorDashboard } from './pages/doctor/DoctorDashboard';
+import { DoctorScheduleManagement } from './pages/doctor/DoctorScheduleManagement';
+import { DoctorAppointments } from './pages/doctor/DoctorAppointments';
 import { PatientHome } from './pages/patient/PatientHome';
 import { PrivateRoute } from './components/PrivateRoute';
 import { ToastProvider } from './contexts/ToastContext';
@@ -31,7 +33,9 @@ export default function App() {
 
             {/* Rotas de DOCTOR */}
             <Route element={<PrivateRoute allowedRoles={['DOCTOR']} />}>
-              <Route path="/doctor" element={<DoctorSchedule />} />
+              <Route path="/doctor" element={<DoctorDashboard />} />
+              <Route path="/doctor/schedule" element={<DoctorScheduleManagement />} />
+              <Route path="/doctor/appointments" element={<DoctorAppointments />} />
             </Route>
 
             {/* Rotas de PATIENT */}
