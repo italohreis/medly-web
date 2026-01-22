@@ -6,7 +6,7 @@ import { Button } from '../../components/ui/Button';
 import { Pagination } from '../../components/ui/Pagination';
 import { DoctorModal, type DoctorFormData } from '../../components/admin/DoctorModal';
 import { useDoctorsList } from '../../hooks/useDoctorsList';
-import { adminService } from '../../services/adminService';
+import { doctorService } from '../../services/doctorService';
 import { useToast } from '../../hooks/useToast';
 
 export function DoctorsList() {
@@ -19,7 +19,7 @@ export function DoctorsList() {
     const handleCreateDoctor = async (data: DoctorFormData) => {
         setIsSubmitting(true);
         try {
-            await adminService.createDoctor(data);
+            await doctorService.createDoctor(data);
             showToast('Médico cadastrado com sucesso!', 'success');
             setIsModalOpen(false);
             refetch();
@@ -40,7 +40,7 @@ export function DoctorsList() {
             if (data.email) updateData.email = data.email;
             if (data.specialty) updateData.specialty = data.specialty;
 
-            await adminService.updateDoctor(String(editingDoctor.id), updateData);
+            await doctorService.updateDoctor(String(editingDoctor.id), updateData);
             showToast('Médico atualizado com sucesso!', 'success');
             setIsModalOpen(false);
             setEditingDoctor(null);
@@ -57,7 +57,7 @@ export function DoctorsList() {
         if (!confirm(`Tem certeza que deseja excluir o médico ${name}?`)) return;
 
         try {
-            await adminService.deleteDoctor(id);
+            await doctorService.deleteDoctor(id);
             showToast('Médico excluído com sucesso!', 'success');
             refetch();
         } catch (error) {

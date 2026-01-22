@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { doctorService } from '../services/doctorService';
+import { scheduleService } from '../services/scheduleService';
 import type { TimeSlot } from '../types/entities';
 import { useAuth } from './useAuth';
 
@@ -28,7 +28,7 @@ export function useAvailableTimeSlots(): UseAvailableTimeSlotsReturn {
         setError(null);
 
         try {
-            const data = await doctorService.getAvailableTimeSlots(doctorId, startDate, endDate);
+            const data = await scheduleService.searchAvailableTimeSlots({ doctorId, startDate, endDate });
             setTimeSlots(data.content);
         } catch (err) {
             const message = err instanceof Error 

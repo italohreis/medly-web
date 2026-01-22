@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { adminService } from '../services/adminService';
+import { patientService } from '../services/patientService';
 import { useToast } from './useToast';
 import type { Patient } from '../types/entities';
 import type { PaginatedResponse } from '../types/common';
@@ -14,7 +14,7 @@ export function usePatientsList(pageSize: number = 10) {
         async function fetchPatients() {
             setLoading(true);
             try {
-                const response = await adminService.getPatients(currentPage, pageSize);
+                const response = await patientService.getPatients({ page: currentPage, size: pageSize });
                 setData(response);
             } catch (error) {
                 console.error('Erro ao carregar pacientes', error);

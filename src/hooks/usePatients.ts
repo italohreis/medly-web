@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { adminService } from '../services/adminService';
+import { patientService } from '../services/patientService';
 import type { Patient } from '../types/entities';
 
 interface UsePatientsReturn {
@@ -19,7 +19,7 @@ export function usePatients(): UsePatientsReturn {
         setError(null);
 
         try {
-            const data = await adminService.getPatients(0, 100, name);
+            const data = await patientService.getPatients({ size: 100, name });
             setPatients(data.content);
         } catch (err) {
             const message = err instanceof Error 

@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
-import { doctorService } from '../services/doctorService';
+import { appointmentService } from '../services/appointmentService';
+import { scheduleService } from '../services/scheduleService';
 import type { Appointment, AvailabilityWindow } from '../types/entities';
 import { useAuth } from './useAuth';
 import { useToast } from './useToast';
@@ -23,8 +24,8 @@ export function useDoctorDashboard() {
     try {
       setLoading(true);
       const [appointmentsRes, windowsRes] = await Promise.all([
-        doctorService.getMyAppointments(doctorId),
-        doctorService.getAvailabilityWindows(doctorId)
+        appointmentService.getAppointments({ doctorId }),
+        scheduleService.getAvailabilityWindows(doctorId)
       ]);
 
       setAppointments(appointmentsRes.content);
@@ -41,9 +42,9 @@ export function useDoctorDashboard() {
   const handleStatusChange = async (appointmentId: string, newStatus: 'COMPLETED' | 'CANCELLED') => {
     try {
       if (newStatus === 'COMPLETED') {
-        await doctorService.completeAppointment(appointmentId);
+        await appointmentService.completeAppointment(appointmentId);
       } else {
-        await doctorService.cancelAppointment(appointmentId);
+        await appointmentService.cancelAppointment(appointmentId);
       }
       showToast('Status atualizado.', 'success');
       fetchDashboardData();
@@ -57,7 +58,7 @@ export function useDoctorDashboard() {
     if (!doctorId) return;
     
     try {
-      await doctorService.createAvailabilityWindow(doctorId, data);
+      await scheduleService.createAvailabilityWindow(doctorId, data);
       showToast('Nova janela de horário criada.', 'success');
       fetchDashboardData();
     } catch {
@@ -67,7 +68,7 @@ export function useDoctorDashboard() {
 
   const handleDeleteWindow = async (id: string) => {
     try {
-      await doctorService.deleteAvailabilityWindow(id);
+      await scheduleService.deleteAvailabilityWindow(id);
       showToast('Janela de horário removida.', 'success');
       fetchDashboardData();
     } catch {

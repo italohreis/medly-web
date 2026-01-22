@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { doctorService } from '../services/doctorService';
+import { appointmentService } from '../services/appointmentService';
 import type { CreateAppointmentRequest } from '../types/entities';
 import { useToast } from './useToast';
 
@@ -20,7 +20,7 @@ export function useCreateAppointment(onSuccess?: () => void): UseCreateAppointme
         setError(null);
 
         try {
-            await doctorService.createAppointment(data);
+            await appointmentService.createAppointment(data);
             showToast('Consulta criada com sucesso!', 'success');
             onSuccess?.();
             return true;

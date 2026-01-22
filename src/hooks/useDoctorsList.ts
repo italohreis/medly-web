@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { adminService } from '../services/adminService';
+import { doctorService } from '../services/doctorService';
 import { useToast } from './useToast';
 import type { Doctor } from '../types/entities';
 import type { PaginatedResponse } from '../types/common';
@@ -13,7 +13,7 @@ export function useDoctorsList(pageSize: number = 10) {
     const fetchDoctors = useCallback(async () => {
         setLoading(true);
         try {
-            const response = await adminService.getDoctors(currentPage, pageSize);
+            const response = await doctorService.getDoctors({ page: currentPage, size: pageSize });
             setData(response);
         } catch (error) {
             console.error('Erro ao carregar médicos', error);

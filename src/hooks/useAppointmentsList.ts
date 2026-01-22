@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { adminService } from '../services/adminService';
+import { appointmentService } from '../services/appointmentService';
 import { useToast } from './useToast';
 import type { Appointment } from '../types/entities';
 import type { PaginatedResponse } from '../types/common';
@@ -14,7 +14,7 @@ export function useAppointmentsList(pageSize: number = 10) {
         async function fetchAppointments() {
             setLoading(true);
             try {
-                const response = await adminService.getAppointments(currentPage, pageSize);
+                const response = await appointmentService.getAppointments({ page: currentPage, size: pageSize });
                 setData(response);
             } catch (error) {
                 console.error('Erro ao carregar consultas', error);

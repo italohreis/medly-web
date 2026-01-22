@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { adminService } from '../services/adminService';
+import { doctorService } from '../services/doctorService';
+import { patientService } from '../services/patientService';
 import { useToast } from './useToast';
 import type { Doctor, Patient } from '../types/entities';
 import type { DashboardStats } from '../types/admin';
@@ -20,13 +22,13 @@ export function useAdminDashboard() {
             try {
                 const [statsData, doctorsData, patientsData] = await Promise.all([
                     adminService.getDashboardStats(),
-                    adminService.getRecentDoctors(5),
-                    adminService.getRecentPatients(5)
+                    doctorService.getDoctors({ size: 5 }),
+                    patientService.getPatients({ size: 5 })
                 ]);
 
                 setStats(statsData);
-                setRecentDoctors(doctorsData);
-                setRecentPatients(patientsData);
+                setRecentDoctors(doctorsData.content);
+                setRecentPatients(patientsData.content);
             } catch (error) {
                 console.error('Erro ao carregar dashboard', error);
                 showToast('Não foi possível carregar os dados do painel.', 'error');
