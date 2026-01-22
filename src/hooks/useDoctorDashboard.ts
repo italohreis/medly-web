@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { doctorService } from '../services/doctorService';
-import type { Appointment, AvailabilityWindow } from '../types/doctor';
+import type { Appointment, AvailabilityWindow } from '../types/entities';
 import { useAuth } from './useAuth';
 import { useToast } from './useToast';
 

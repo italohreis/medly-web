@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { doctorService } from '../services/doctorService';
-import type { TimeSlot } from '../types/timeslot';
+import type { TimeSlot } from '../types/entities';
 import { useAuth } from './useAuth';
 
 interface UseAvailableTimeSlotsReturn {

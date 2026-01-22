@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Card, CardHeader, CardTitle } from '../ui/Card';
-import type { Patient } from '../../types/admin';
+import type { Patient } from '../../types/entities';
 
 interface PatientsTableProps {
     patients: Patient[];

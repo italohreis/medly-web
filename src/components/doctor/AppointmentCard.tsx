@@ -1,4 +1,5 @@
-import type { Appointment, AppointmentStatus } from '../../types/doctor';
+import type { Appointment } from '../../types/entities';
+import type { AppointmentStatus } from '../../types/common';
 import { formatLocalDateTime } from '../../utils';
 
 interface AppointmentCardProps {

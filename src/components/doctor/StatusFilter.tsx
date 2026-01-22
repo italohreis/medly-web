@@ -1,4 +1,4 @@
-import type { AppointmentStatus } from '../../types/doctor';
+import type { AppointmentStatus } from '../../types/common';
 
 type FilterStatus = AppointmentStatus | 'ALL';
 

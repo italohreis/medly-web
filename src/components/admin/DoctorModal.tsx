@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { Modal } from '../ui/Modal';
 import { Input } from '../ui/Input';
 import { Button } from '../ui/Button';
-import type { Doctor } from '../../types/admin';
+import type { Doctor } from '../../types/entities';
 
 export interface DoctorFormData {
     name: string;

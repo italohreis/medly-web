@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { adminService } from '../services/adminService';
 import { useToast } from './useToast';
-import type { DashboardStats, Doctor, Patient } from '../types/admin';
+import type { Doctor, Patient } from '../types/entities';
+import type { DashboardStats } from '../types/admin';
 
 export function useAdminDashboard() {
     const { showToast } = useToast();

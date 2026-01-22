@@ -7,14 +7,12 @@ import { formatLocalDate, formatLocalTime } from '../../utils/date';
 
 const statusColors = {
     SCHEDULED: 'bg-info-100 text-info-700',
-    CONFIRMED: 'bg-success-100 text-success-700',
     CANCELLED: 'bg-danger-100 text-danger-700',
-    COMPLETED: 'bg-medical-200 text-medical-700'
+    COMPLETED: 'bg-success-100 text-success-700'
 };
 
 const statusLabels = {
     SCHEDULED: 'Agendada',
-    CONFIRMED: 'Confirmada',
     CANCELLED: 'Cancelada',
     COMPLETED: 'Concluída'
 };

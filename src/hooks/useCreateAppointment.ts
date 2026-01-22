@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { doctorService } from '../services/doctorService';
-import type { CreateAppointmentRequest } from '../types/timeslot';
+import type { CreateAppointmentRequest } from '../types/entities';
 import { useToast } from './useToast';
 
 interface UseCreateAppointmentReturn {

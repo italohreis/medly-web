@@ -1,9 +1,9 @@
-import { LucideIcon } from 'lucide-react';
+import type { ComponentType, SVGProps } from 'react';
 
 export interface StatCardProps {
   title: string;
   value: string | number;
-  icon: LucideIcon;
+  icon: ComponentType<SVGProps<SVGSVGElement>>;
   description: string;
   trend?: string;
 }

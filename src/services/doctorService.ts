@@ -1,7 +1,6 @@
 import { api } from './api';
-import type { AvailabilityWindow, Appointment } from '../types/doctor';
-import type { PaginatedResponse } from '../types/admin';
-import type { TimeSlot, CreateAppointmentRequest } from '../types/timeslot';
+import type { AvailabilityWindow, Appointment, TimeSlot, CreateAppointmentRequest } from '../types/entities';
+import type { PaginatedResponse } from '../types/common';
 
 const getMyAppointments = async (doctorId: string): Promise<PaginatedResponse<Appointment>> => {
     const { data } = await api.get<PaginatedResponse<Appointment>>('/appointments', {

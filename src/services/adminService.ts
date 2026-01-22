@@ -1,5 +1,7 @@
 import { api } from './api';
-import type { DashboardStats, Doctor, Patient, Appointment, PaginatedResponse } from '../types/admin';
+import type { Doctor, Patient, Appointment } from '../types/entities';
+import type { PaginatedResponse } from '../types/common';
+import type { DashboardStats } from '../types/admin';
 
 const getDashboardStats = async (): Promise<DashboardStats> => {
     const [doctorsRes, patientsRes, appointmentsRes] = await Promise.all([

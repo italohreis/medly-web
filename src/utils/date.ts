@@ -1,4 +1,5 @@
-export const formatDateTime = (dateString: string): string => {
+export const formatDateTime = (dateString: string | null | undefined): string => {
+    if (!dateString) return '-';
     return new Date(dateString).toLocaleString('pt-BR', {
         day: '2-digit',
         month: '2-digit',
@@ -25,7 +26,8 @@ export const formatDate = (dateString: string): string => {
     });
 };
 
-export const formatTime = (dateString: string): string => {
+export const formatTime = (dateString: string | null | undefined): string => {
+    if (!dateString) return '-';
     return new Date(dateString).toLocaleTimeString('pt-BR', {
         hour: '2-digit',
         minute: '2-digit'
@@ -41,7 +43,8 @@ export const formatDateFull = (dateString: string): string => {
     });
 };
 
-export const calculateDurationInMinutes = (startTime: string, endTime: string): number => {
+export const calculateDurationInMinutes = (startTime: string | null | undefined, endTime: string | null | undefined): number => {
+    if (!startTime || !endTime) return 0;
     const start = new Date(startTime);
     const end = new Date(endTime);
     return Math.round((end.getTime() - start.getTime()) / (1000 * 60));
@@ -60,34 +63,42 @@ export const isWithinDays = (dateString: string, days: number): boolean => {
     return date >= today && date <= futureDate;
 };
 
-export const formatLocalDateTime = (dateString: string): string => {
+export const formatLocalDateTime = (dateString: string | null | undefined): string => {
+    if (!dateString) return '-';
     const cleanDateString = dateString.replace('Z', '');
     const [datePart, timePart] = cleanDateString.split('T');
+    if (!datePart || !timePart) return '-';
     const [year, month, day] = datePart.split('-');
     const [hour, minute] = timePart.split(':');
     
     return `${day}/${month}/${year} ${hour}:${minute}`;
 };
 
-export const formatLocalTime = (dateString: string): string => {
+export const formatLocalTime = (dateString: string | null | undefined): string => {
+    if (!dateString) return '-';
     const cleanDateString = dateString.replace('Z', '');
     const timePart = cleanDateString.split('T')[1];
+    if (!timePart) return '-';
     const [hour, minute] = timePart.split(':');
     
     return `${hour}:${minute}`;
 };
 
-export const formatLocalDate = (dateString: string): string => {
+export const formatLocalDate = (dateString: string | null | undefined): string => {
+    if (!dateString) return '-';
     const cleanDateString = dateString.replace('Z', '');
     const datePart = cleanDateString.split('T')[0];
+    if (!datePart) return '-';
     const [year, month, day] = datePart.split('-');
     
     return `${day}/${month}/${year}`;
 };
 
-export const formatLocalDateFull = (dateString: string): string => {
+export const formatLocalDateFull = (dateString: string | null | undefined): string => {
+    if (!dateString) return '-';
     const cleanDateString = dateString.replace('Z', '');
     const datePart = cleanDateString.split('T')[0];
+    if (!datePart) return '-';
     const [year, month, day] = datePart.split('-');
     
     const weekdays = ['domingo', 'segunda-feira', 'terça-feira', 'quarta-feira', 'quinta-feira', 'sexta-feira', 'sábado'];

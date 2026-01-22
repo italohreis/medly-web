@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { adminService } from '../services/adminService';
 import { useToast } from './useToast';
-import type { Patient, PaginatedResponse } from '../types/admin';
+import type { Patient } from '../types/entities';
+import type { PaginatedResponse } from '../types/common';
 
 export function usePatientsList(pageSize: number = 10) {
     const { showToast } = useToast();

@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { adminService } from '../services/adminService';
 import { useToast } from './useToast';
-import type { Doctor, PaginatedResponse } from '../types/admin';
+import type { Doctor } from '../types/entities';
+import type { PaginatedResponse } from '../types/common';
 
 export function useDoctorsList(pageSize: number = 10) {
     const { showToast } = useToast();

@@ -25,6 +25,7 @@ export function DoctorDashboard() {
         .slice(0, 5);
 
     const todayAppointments = appointments.filter(apt => {
+        if (!apt.startTime) return false;
         const today = new Date().toDateString();
         return new Date(apt.startTime).toDateString() === today;
     });

@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { adminService } from '../services/adminService';
-import type { Patient } from '../types/admin';
+import type { Patient } from '../types/entities';
 
 interface UsePatientsReturn {
     patients: Patient[];

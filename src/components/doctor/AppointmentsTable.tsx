@@ -1,4 +1,4 @@
-import type { Appointment } from '../../types/doctor';
+import type { Appointment } from '../../types/entities';
 import { statusConfig } from './AppointmentCard';
 import { formatDateTime, formatTime, calculateDurationInMinutes } from '../../utils';
 

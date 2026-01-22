@@ -1,4 +1,4 @@
-import type { AvailabilityWindow } from '../../types/doctor';
+import type { AvailabilityWindow } from '../../types/entities';
 import { formatLocalTime } from '../../utils/date';
 
 interface AvailabilityWindowCardProps {

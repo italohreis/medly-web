@@ -10,7 +10,7 @@ import {
     type ScheduleFormData 
 } from '../../components/doctor';
 import { CalendarIcon, CheckIcon, ClockIcon, PlusIcon } from '../../components/icons';
-import type { AvailabilityWindow } from '../../types/doctor';
+import type { AvailabilityWindow } from '../../types/entities';
 import { formatLocalDateFull, parseLocalDateTime } from '../../utils/date';
 
 const groupWindowsByDate = (windows: AvailabilityWindow[]) => {
