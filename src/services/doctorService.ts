@@ -1,6 +1,7 @@
 import { api } from './api';
 import type { AvailabilityWindow, Appointment } from '../types/doctor';
 import type { PaginatedResponse } from '../types/admin';
+import type { TimeSlot, CreateAppointmentRequest } from '../types/timeslot';
 
 const getMyAppointments = async (doctorId: string): Promise<PaginatedResponse<Appointment>> => {
     const { data } = await api.get<PaginatedResponse<Appointment>>('/appointments', {
@@ -21,7 +22,10 @@ const cancelAppointment = async (id: string): Promise<Appointment> => {
 
 const getAvailabilityWindows = async (doctorId: string): Promise<PaginatedResponse<AvailabilityWindow>> => {
     const { data } = await api.get<PaginatedResponse<AvailabilityWindow>>('/schedule/windows', {
-        params: { doctorId }
+        params: { 
+            doctorId, 
+            sort: 'startTime,asc' 
+        }
     });
     return data;
 };
@@ -38,11 +42,34 @@ const deleteAvailabilityWindow = async (id: string): Promise<void> => {
     await api.delete(`/schedule/windows/${id}`);
 };
 
+const getAvailableTimeSlots = async (
+    doctorId: string, 
+    startDate: string, 
+    endDate: string
+): Promise<PaginatedResponse<TimeSlot>> => {
+    const { data } = await api.get<PaginatedResponse<TimeSlot>>('/schedule/timeslots/search', {
+        params: { 
+            doctorId, 
+            startDate, 
+            endDate,
+            size: 50 
+        }
+    });
+    return data;
+};
+
+const createAppointment = async (request: CreateAppointmentRequest): Promise<Appointment> => {
+    const { data } = await api.post<Appointment>('/appointments', request);
+    return data;
+};
+
 export const doctorService = {
     getMyAppointments,
     completeAppointment,
     cancelAppointment,
     getAvailabilityWindows,
     createAvailabilityWindow,
-    deleteAvailabilityWindow
+    deleteAvailabilityWindow,
+    getAvailableTimeSlots,
+    createAppointment
 };

@@ -11,15 +11,11 @@ import {
 } from '../../components/doctor';
 import { CalendarIcon, CheckIcon, ClockIcon, PlusIcon } from '../../components/icons';
 import type { AvailabilityWindow } from '../../types/doctor';
+import { formatLocalDateFull, parseLocalDateTime } from '../../utils/date';
 
 const groupWindowsByDate = (windows: AvailabilityWindow[]) => {
     return windows.reduce((acc, win) => {
-        const date = new Date(win.startTime).toLocaleDateString('pt-BR', {
-            weekday: 'long',
-            day: '2-digit',
-            month: 'long',
-            year: 'numeric'
-        });
+        const date = formatLocalDateFull(win.startTime);
         if (!acc[date]) {
             acc[date] = [];
         }
@@ -30,9 +26,10 @@ const groupWindowsByDate = (windows: AvailabilityWindow[]) => {
 
 const countWindowsInNextWeek = (windows: AvailabilityWindow[]) => {
     const today = new Date();
+    today.setHours(0, 0, 0, 0);
     const weekFromNow = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
     return windows.filter(w => {
-        const windowDate = new Date(w.startTime);
+        const windowDate = parseLocalDateTime(w.startTime);
         return windowDate >= today && windowDate <= weekFromNow;
     }).length;
 };

@@ -1,20 +1,23 @@
 import { useState } from 'react';
 import { DoctorLayout } from '../../components/layouts/DoctorLayout';
 import { Card } from '../../components/ui/Card';
+import { Button } from '../../components/ui/Button';
 import { Pagination } from '../../components/ui/Pagination';
 import { useDoctorDashboard } from '../../hooks/useDoctorDashboard';
 import { 
     StatusFilter, 
     AppointmentsTable,
+    CreateAppointmentModal,
     type FilterStatus 
 } from '../../components/doctor';
 
 const ITEMS_PER_PAGE = 10;
 
 export function DoctorAppointments() {
-    const { appointments, loading, handleStatusChange } = useDoctorDashboard();
+    const { appointments, loading, handleStatusChange, refetch } = useDoctorDashboard();
     const [statusFilter, setStatusFilter] = useState<FilterStatus>('ALL');
     const [currentPage, setCurrentPage] = useState(0);
+    const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
     const filteredAppointments = statusFilter === 'ALL'
         ? appointments
@@ -49,15 +52,27 @@ export function DoctorAppointments() {
         );
     }
 
+    const handleCreateSuccess = () => {
+        refetch();
+    };
+
     return (
         <DoctorLayout>
             <div className="space-y-8">
                 {/* Header */}
-                <div>
-                    <h1 className="text-3xl font-bold text-medical-900">Consultas</h1>
-                    <p className="text-medical-600 mt-1">
-                        Gerencie todas as suas consultas em um só lugar
-                    </p>
+                <div className="flex items-center justify-between">
+                    <div>
+                        <h1 className="text-3xl font-bold text-medical-900">Consultas</h1>
+                        <p className="text-medical-600 mt-1">
+                            Gerencie todas as suas consultas em um só lugar
+                        </p>
+                    </div>
+                    <Button onClick={() => setIsCreateModalOpen(true)}>
+                        <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                        </svg>
+                        Nova Consulta
+                    </Button>
                 </div>
 
                 {/* Filtros por Status */}
@@ -89,12 +104,18 @@ export function DoctorAppointments() {
                         </>
                     )}
                 </Card>
+
+                {/* Modal de Criação */}
+                <CreateAppointmentModal
+                    isOpen={isCreateModalOpen}
+                    onClose={() => setIsCreateModalOpen(false)}
+                    onSuccess={handleCreateSuccess}
+                />
             </div>
         </DoctorLayout>
     );
 }
 
-// Componente de estado vazio
 interface EmptyStateProps {
     statusFilter: FilterStatus;
 }

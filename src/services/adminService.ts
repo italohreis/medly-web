@@ -36,9 +36,17 @@ const getDoctors = async (page: number = 0, size: number = 10): Promise<Paginate
     return response.data;
 };
 
-const getPatients = async (page: number = 0, size: number = 10): Promise<PaginatedResponse<Patient>> => {
+const getPatients = async (page: number = 0, size: number = 10, name?: string): Promise<PaginatedResponse<Patient>> => {
+    const params = new URLSearchParams({
+        page: String(page),
+        size: String(size),
+        sort: 'id,desc'
+    });
+    if (name) {
+        params.append('name', name);
+    }
     const response = await api.get<PaginatedResponse<Patient>>(
-        `/patients?page=${page}&size=${size}&sort=id,desc`
+        `/patients?${params.toString()}`
     );
     return response.data;
 };

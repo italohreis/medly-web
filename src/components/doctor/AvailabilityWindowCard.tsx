@@ -1,4 +1,5 @@
 import type { AvailabilityWindow } from '../../types/doctor';
+import { formatLocalTime } from '../../utils/date';
 
 interface AvailabilityWindowCardProps {
     window: AvailabilityWindow;
@@ -17,13 +18,7 @@ export function AvailabilityWindowCard({ window: win, onDelete }: AvailabilityWi
                     </div>
                     <div>
                         <p className="font-semibold text-medical-900">
-                            {new Date(win.startTime).toLocaleTimeString('pt-BR', {
-                                hour: '2-digit',
-                                minute: '2-digit'
-                            })} - {new Date(win.endTime).toLocaleTimeString('pt-BR', {
-                                hour: '2-digit',
-                                minute: '2-digit'
-                            })}
+                            {formatLocalTime(win.startTime)} - {formatLocalTime(win.endTime)}
                         </p>
                         <p className="text-xs text-medical-500">
                             Disponível para agendamento

@@ -59,3 +59,52 @@ export const isWithinDays = (dateString: string, days: number): boolean => {
     const futureDate = new Date(today.getTime() + days * 24 * 60 * 60 * 1000);
     return date >= today && date <= futureDate;
 };
+
+export const formatLocalDateTime = (dateString: string): string => {
+    const cleanDateString = dateString.replace('Z', '');
+    const [datePart, timePart] = cleanDateString.split('T');
+    const [year, month, day] = datePart.split('-');
+    const [hour, minute] = timePart.split(':');
+    
+    return `${day}/${month}/${year} ${hour}:${minute}`;
+};
+
+export const formatLocalTime = (dateString: string): string => {
+    const cleanDateString = dateString.replace('Z', '');
+    const timePart = cleanDateString.split('T')[1];
+    const [hour, minute] = timePart.split(':');
+    
+    return `${hour}:${minute}`;
+};
+
+export const formatLocalDate = (dateString: string): string => {
+    const cleanDateString = dateString.replace('Z', '');
+    const datePart = cleanDateString.split('T')[0];
+    const [year, month, day] = datePart.split('-');
+    
+    return `${day}/${month}/${year}`;
+};
+
+export const formatLocalDateFull = (dateString: string): string => {
+    const cleanDateString = dateString.replace('Z', '');
+    const datePart = cleanDateString.split('T')[0];
+    const [year, month, day] = datePart.split('-');
+    
+    const weekdays = ['domingo', 'segunda-feira', 'terça-feira', 'quarta-feira', 'quinta-feira', 'sexta-feira', 'sábado'];
+    const months = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+    
+    const date = new Date(`${datePart}T12:00:00`);
+    const weekday = weekdays[date.getDay()];
+    const monthName = months[parseInt(month, 10) - 1];
+    
+    return `${weekday}, ${day} de ${monthName} de ${year}`;
+};
+
+export const parseLocalDateTime = (dateString: string): Date => {
+    const cleanDateString = dateString.replace('Z', '');
+    const [datePart, timePart] = cleanDateString.split('T');
+    const [year, month, day] = datePart.split('-').map(Number);
+    const [hour, minute, second] = (timePart || '00:00:00').split(':').map(s => parseInt(s, 10));
+    
+    return new Date(year, month - 1, day, hour, minute, second || 0);
+};

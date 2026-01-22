@@ -3,6 +3,7 @@ import { DashboardLayout } from '../../components/layouts/DashboardLayout';
 import { Card } from '../../components/ui/Card';
 import { Pagination } from '../../components/ui/Pagination';
 import { useAppointmentsList } from '../../hooks/useAppointmentsList';
+import { formatLocalDate, formatLocalTime } from '../../utils/date';
 
 const statusColors = {
     SCHEDULED: 'bg-info-100 text-info-700',
@@ -109,20 +110,10 @@ export function AppointmentsList() {
                                             <td className="px-6 py-4 text-sm text-medical-600">
                                                 <div>
                                                     <p className="font-medium">
-                                                        {new Date(appointment.startTime).toLocaleDateString('pt-BR', {
-                                                            day: '2-digit',
-                                                            month: '2-digit',
-                                                            year: 'numeric'
-                                                        })}
+                                                        {formatLocalDate(appointment.startTime)}
                                                     </p>
                                                     <p className="text-xs text-medical-500">
-                                                        {new Date(appointment.startTime).toLocaleTimeString('pt-BR', {
-                                                            hour: '2-digit',
-                                                            minute: '2-digit'
-                                                        })} - {new Date(appointment.endTime).toLocaleTimeString('pt-BR', {
-                                                            hour: '2-digit',
-                                                            minute: '2-digit'
-                                                        })}
+                                                        {formatLocalTime(appointment.startTime)} - {formatLocalTime(appointment.endTime)}
                                                     </p>
                                                 </div>
                                             </td>

@@ -15,6 +15,7 @@ import {
     PlusIcon, 
     ClipboardIcon 
 } from '../../components/icons';
+import { formatLocalDate, formatLocalTime } from '../../utils/date';
 
 export function DoctorDashboard() {
     const { appointments, windows, loading, handleStatusChange } = useDoctorDashboard();
@@ -172,21 +173,11 @@ export function DoctorDashboard() {
                                                     <CalendarIcon />
                                                 </span>
                                                 <span className="font-medium text-medical-900">
-                                                    {new Date(win.startTime).toLocaleDateString('pt-BR', {
-                                                        day: '2-digit',
-                                                        month: '2-digit',
-                                                        year: 'numeric'
-                                                    })}
+                                                    {formatLocalDate(win.startTime)}
                                                 </span>
                                             </div>
                                             <p className="text-xs text-medical-500 mt-1 ml-6">
-                                                {new Date(win.startTime).toLocaleTimeString('pt-BR', {
-                                                    hour: '2-digit',
-                                                    minute: '2-digit'
-                                                })} - {new Date(win.endTime).toLocaleTimeString('pt-BR', {
-                                                    hour: '2-digit',
-                                                    minute: '2-digit'
-                                                })}
+                                                {formatLocalTime(win.startTime)} - {formatLocalTime(win.endTime)}
                                             </p>
                                         </div>
                                     ))
