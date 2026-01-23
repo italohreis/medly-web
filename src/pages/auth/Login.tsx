@@ -2,6 +2,8 @@ import { useLogin } from '../../hooks/useLogin';
 import { Input } from '../../components/ui/Input';
 import { Button } from '../../components/ui/Button';
 import { Link } from 'react-router-dom';
+import { Footer } from '../../components/ui/Footer';
+import { Header } from '../../components/ui/Header';
 
 export function Login() {
   const {
@@ -15,21 +17,7 @@ export function Login() {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-medical-50 via-primary-50 to-medical-50">
       {/* Header */}
-      <header className="w-full py-6 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-primary-600 to-primary-700 rounded-xl shadow-lg flex items-center justify-center">
-              <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-            </div>
-            <div>
-              <h1 className="text-2xl font-bold text-medical-900">Medly</h1>
-              <p className="text-xs text-medical-600">Gestão Médica</p>
-            </div>
-          </div>
-        </div>
-      </header>
+      <Header />
 
       {/* Main Content */}
       <main className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
@@ -125,26 +113,7 @@ export function Login() {
       </main>
 
       {/* Footer */}
-      <footer className="w-full py-6 px-4 sm:px-6 lg:px-8 border-t border-medical-200 bg-white/50 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-sm text-medical-600">
-              © 2025 Medly. Todos os direitos reservados.
-            </p>
-            <div className="flex items-center gap-6 text-sm text-medical-600">
-              <a href="#" className="hover:text-primary-600 transition-colors">
-                Termos de Uso
-              </a>
-              <a href="#" className="hover:text-primary-600 transition-colors">
-                Privacidade
-              </a>
-              <a href="#" className="hover:text-primary-600 transition-colors">
-                Suporte
-              </a>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
