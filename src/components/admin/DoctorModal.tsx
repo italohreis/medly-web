@@ -4,6 +4,7 @@ import { Modal } from '../ui/Modal';
 import { Input } from '../ui/Input';
 import { Button } from '../ui/Button';
 import type { Doctor } from '../../types/entities';
+import { SPECIALTIES } from '../../types/common';
 
 export interface DoctorFormData {
     name: string;
@@ -94,13 +95,11 @@ export function DoctorModal({ isOpen, onClose, onSubmit, loading, doctor, isEdit
                             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         >
                             <option value="">Selecione uma especialidade</option>
-                            <option value="CARDIOLOGY">Cardiology</option>
-                            <option value="DERMATOLOGY">Dermatology</option>
-                            <option value="NEUROLOGY">Neurology</option>
-                            <option value="PEDIATRICS">Pediatrics</option>
-                            <option value="PSYCHIATRY">Psychiatry</option>
-                            <option value="RADIOLOGY">Radiology</option>
-                            <option value="SURGERY">Surgery</option>
+                            {SPECIALTIES.map((spec) => (
+                                <option key={spec.value} value={spec.value}>
+                                    {spec.label}
+                                </option>
+                            ))}
                         </select>
                         {errors.specialty && (
                             <p className="text-red-500 text-sm mt-1">{errors.specialty.message}</p>

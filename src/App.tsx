@@ -8,6 +8,7 @@ import { AppointmentsList } from './pages/admin/AppointmentsList';
 import { DoctorDashboard } from './pages/doctor/DoctorDashboard';
 import { DoctorScheduleManagement } from './pages/doctor/DoctorScheduleManagement';
 import { DoctorAppointments } from './pages/doctor/DoctorAppointments';
+import { DoctorProfile } from './pages/doctor/DoctorProfile';
 import { PatientHome } from './pages/patient/PatientHome';
 import { PrivateRoute } from './components/PrivateRoute';
 import { ToastProvider } from './contexts/ToastContext';
@@ -36,6 +37,7 @@ export default function App() {
               <Route path="/doctor" element={<DoctorDashboard />} />
               <Route path="/doctor/schedule" element={<DoctorScheduleManagement />} />
               <Route path="/doctor/appointments" element={<DoctorAppointments />} />
+              <Route path="/doctor/profile" element={<DoctorProfile />} />
             </Route>
 
             {/* Rotas de PATIENT */}
