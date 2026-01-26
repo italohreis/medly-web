@@ -1,10 +1,9 @@
 import { Link } from 'react-router-dom';
 import { PatientLayout } from '../../components/layouts/PatientLayout';
-import { Card } from '../../components/ui/Card';
 import { Pagination } from '../../components/ui/Pagination';
 import { StatusFilter } from '../../components/ui/StatusFilter';
 import { usePatientAppointments, type FilterStatus } from '../../hooks/usePatientAppointments';
-import { PatientAppointmentsTable } from '../../components/patient/PatientAppointmentsTable';
+import { AppointmentsList } from '../../components/patient/AppointmentsList';
 import { CalendarIcon } from '../../components/icons';
 
 export function PatientAppointments() {
@@ -60,27 +59,27 @@ export function PatientAppointments() {
                 />
 
                 {/* Lista de Consultas */}
-                <Card padding="none" className="overflow-hidden">
-                    {appointments.length === 0 ? (
-                        <EmptyState statusFilter={statusFilter} />
-                    ) : (
-                        <>
-                            <PatientAppointmentsTable
-                                appointments={appointments}
-                                onCancel={handleCancelAppointment}
-                            />
+                {appointments.length === 0 ? (
+                    <EmptyState statusFilter={statusFilter} />
+                ) : (
+                    <>
+                        <AppointmentsList
+                            appointments={appointments}
+                            onCancel={handleCancelAppointment}
+                        />
 
-                            {totalPages > 1 && (
+                        {totalPages > 1 && (
+                            <div className="mt-6">
                                 <Pagination
                                     currentPage={currentPage}
                                     totalPages={totalPages}
                                     onPageChange={setCurrentPage}
                                     loading={loading}
                                 />
-                            )}
-                        </>
-                    )}
-                </Card>
+                            </div>
+                        )}
+                    </>
+                )}
             </div>
         </PatientLayout>
     );
@@ -99,7 +98,7 @@ function EmptyState({ statusFilter }: EmptyStateProps) {
     };
 
     return (
-        <div className="p-12 text-center">
+        <div className="bg-white rounded-xl border border-medical-200 p-12 text-center">
             <div className="w-16 h-16 mx-auto mb-4 bg-medical-100 rounded-full flex items-center justify-center">
                 <span className="w-8 h-8 text-medical-400">
                     <CalendarIcon />

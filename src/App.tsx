@@ -11,6 +11,7 @@ import { DoctorAppointments } from './pages/doctor/DoctorAppointments';
 import { DoctorProfile } from './pages/doctor/DoctorProfile';
 import { PatientDashboard } from './pages/patient/PatientDashboard';
 import { PatientAppointments } from './pages/patient/PatientAppointments';
+import { PatientBooking } from './pages/patient/PatientBooking';
 import { PrivateRoute } from './components/PrivateRoute';
 import { ToastProvider } from './contexts/ToastContext';
 import { AuthProvider } from './contexts/AuthContext';
@@ -45,6 +46,7 @@ export default function App() {
             <Route element={<PrivateRoute allowedRoles={['PATIENT']} />}>
               <Route path="/patient" element={<PatientDashboard />} />
               <Route path="/patient/appointments" element={<PatientAppointments />} />
+              <Route path="/patient/book" element={<PatientBooking />} />
             </Route>
 
             <Route path="*" element={<Navigate to="/" replace />} />

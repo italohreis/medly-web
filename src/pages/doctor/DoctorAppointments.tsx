@@ -1,11 +1,10 @@
 import { useState } from 'react';
 import { DoctorLayout } from '../../components/layouts/DoctorLayout';
-import { Card } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
 import { Pagination } from '../../components/ui/Pagination';
 import { useDoctorDashboard } from '../../hooks/useDoctorDashboard';
 import {  
-    AppointmentsTable,
+    DoctorAppointmentsList,
     CreateAppointmentModal,
 } from '../../components/doctor';
 import { StatusFilter, type FilterStatus } from '../../components/ui/StatusFilter';
@@ -82,27 +81,27 @@ export function DoctorAppointments() {
                 />
 
                 {/* Lista de Consultas */}
-                <Card padding="none" className="overflow-hidden">
-                    {filteredAppointments.length === 0 ? (
-                        <EmptyState statusFilter={statusFilter} />
-                    ) : (
-                        <>
-                            <AppointmentsTable
-                                appointments={paginatedAppointments}
-                                onStatusChange={handleStatusChange}
-                            />
+                {filteredAppointments.length === 0 ? (
+                    <EmptyState statusFilter={statusFilter} />
+                ) : (
+                    <>
+                        <DoctorAppointmentsList
+                            appointments={paginatedAppointments}
+                            onStatusChange={handleStatusChange}
+                        />
 
-                            {totalPages > 1 && (
+                        {totalPages > 1 && (
+                            <div className="mt-6">
                                 <Pagination
                                     currentPage={currentPage}
                                     totalPages={totalPages}
                                     onPageChange={setCurrentPage}
                                     loading={loading}
                                 />
-                            )}
-                        </>
-                    )}
-                </Card>
+                            </div>
+                        )}
+                    </>
+                )}
 
                 {/* Modal de Criação */}
                 <CreateAppointmentModal
@@ -128,7 +127,7 @@ function EmptyState({ statusFilter }: EmptyStateProps) {
     };
 
     return (
-        <div className="p-12 text-center">
+        <div className="bg-white rounded-xl border border-medical-200 p-12 text-center">
             <div className="w-16 h-16 mx-auto mb-4 bg-medical-100 rounded-full flex items-center justify-center">
                 <svg className="w-8 h-8 text-medical-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
