@@ -1,5 +1,5 @@
 import type { Appointment } from '../../types/entities';
-import { statusConfig } from './AppointmentCard';
+import { APPOINTMENT_STATUS_CONFIG } from '../../types/common';
 import { formatDateTime, formatTime, calculateDurationInMinutes } from '../../utils';
 
 interface AppointmentsTableProps {
@@ -33,7 +33,7 @@ export function AppointmentsTable({ appointments, onStatusChange }: Appointments
                 <tbody className="divide-y divide-medical-100">
                     {appointments.map((apt) => {
                         const duration = calculateDurationInMinutes(apt.startTime, apt.endTime);
-                        const status = statusConfig[apt.status];
+                        const status = APPOINTMENT_STATUS_CONFIG[apt.status];
 
                         return (
                             <tr key={apt.id} className="hover:bg-medical-50 transition-colors">
@@ -62,7 +62,7 @@ export function AppointmentsTable({ appointments, onStatusChange }: Appointments
                                     <span className="text-sm text-medical-600">{duration} min</span>
                                 </td>
                                 <td className="px-6 py-4">
-                                    <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${status.bg} ${status.text}`}>
+                                    <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${status.bgClass} ${status.textClass}`}>
                                         {status.label}
                                     </span>
                                 </td>

@@ -1,5 +1,5 @@
 import type { Appointment } from '../../types/entities';
-import type { AppointmentStatus } from '../../types/common';
+import { APPOINTMENT_STATUS_CONFIG } from '../../types/common';
 import { formatLocalDateTime } from '../../utils';
 
 interface AppointmentCardProps {
@@ -8,14 +8,8 @@ interface AppointmentCardProps {
     showActions?: boolean;
 }
 
-const statusConfig: Record<AppointmentStatus, { label: string; bg: string; text: string }> = {
-    SCHEDULED: { label: 'Agendado', bg: 'bg-info-100', text: 'text-info-700' },
-    COMPLETED: { label: 'Finalizado', bg: 'bg-success-100', text: 'text-success-700' },
-    CANCELLED: { label: 'Cancelado', bg: 'bg-danger-100', text: 'text-danger-700' }
-};
-
 export function AppointmentCard({ appointment, onStatusChange, showActions = true }: AppointmentCardProps) {
-    const status = statusConfig[appointment.status];
+    const status = APPOINTMENT_STATUS_CONFIG[appointment.status];
 
     return (
         <div className="p-4 hover:bg-medical-50 transition-colors">
@@ -35,7 +29,7 @@ export function AppointmentCard({ appointment, onStatusChange, showActions = tru
                     </div>
                 </div>
                 <div className="flex items-center gap-2">
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${status.bg} ${status.text}`}>
+                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${status.bgClass} ${status.textClass}`}>
                         {status.label}
                     </span>
                     {showActions && appointment.status === 'SCHEDULED' && onStatusChange && (
@@ -65,5 +59,3 @@ export function AppointmentCard({ appointment, onStatusChange, showActions = tru
         </div>
     );
 }
-
-export { statusConfig };

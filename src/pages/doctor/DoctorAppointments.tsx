@@ -4,12 +4,11 @@ import { Card } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
 import { Pagination } from '../../components/ui/Pagination';
 import { useDoctorDashboard } from '../../hooks/useDoctorDashboard';
-import { 
-    StatusFilter, 
+import {  
     AppointmentsTable,
     CreateAppointmentModal,
-    type FilterStatus 
 } from '../../components/doctor';
+import { StatusFilter, type FilterStatus } from '../../components/ui/StatusFilter';
 
 const ITEMS_PER_PAGE = 10;
 

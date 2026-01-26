@@ -4,7 +4,7 @@ import { Card } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
 import { useDoctorProfile } from '../../hooks/useDoctorProfile';
-import { SPECIALTIES } from '../../types/common';
+import { SPECIALTIES, getSpecialtyLabel } from '../../types/common';
 
 export function DoctorProfile() {
     const { doctor, loading, updating, fetchProfile, updateProfile } = useDoctorProfile();
@@ -85,7 +85,7 @@ export function DoctorProfile() {
                                 Dr(a). {doctor?.name}
                             </h2>
                             <p className="text-medical-500">
-                                {SPECIALTIES.find(s => s.value === doctor?.specialty)?.label || doctor?.specialty}
+                                {getSpecialtyLabel(doctor?.specialty)}
                             </p>
                             <div className="mt-4 p-3 bg-medical-50 rounded-lg">
                                 <p className="text-sm text-medical-600">CRM</p>
@@ -215,7 +215,7 @@ export function DoctorProfile() {
                                                 Especialidade
                                             </label>
                                             <p className="text-medical-900 font-medium">
-                                                {SPECIALTIES.find(s => s.value === doctor?.specialty)?.label || doctor?.specialty || '-'}
+                                                {getSpecialtyLabel(doctor?.specialty)}
                                             </p>
                                         </div>
 

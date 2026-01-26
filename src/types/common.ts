@@ -32,3 +32,20 @@ export const SPECIALTIES: { value: Specialty; label: string }[] = [
     { value: 'RADIOLOGY', label: 'Radiologia' },
     { value: 'SURGERY', label: 'Cirurgia' }
 ];
+
+export function getSpecialtyLabel(specialty: string | undefined | null): string {
+    if (!specialty) return '-';
+    return SPECIALTIES.find(s => s.value === specialty)?.label || specialty;
+}
+
+export interface AppointmentStatusStyle {
+    label: string;
+    bgClass: string;
+    textClass: string;
+}
+
+export const APPOINTMENT_STATUS_CONFIG: Record<AppointmentStatus, AppointmentStatusStyle> = {
+    SCHEDULED: { label: 'Agendada', bgClass: 'bg-primary-100', textClass: 'text-primary-700' },
+    COMPLETED: { label: 'Realizada', bgClass: 'bg-success-100', textClass: 'text-success-700' },
+    CANCELLED: { label: 'Cancelada', bgClass: 'bg-danger-100', textClass: 'text-danger-700' }
+};

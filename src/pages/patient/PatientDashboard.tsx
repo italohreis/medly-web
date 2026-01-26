@@ -14,7 +14,7 @@ import {
     PlusIcon 
 } from '../../components/icons';
 import { formatLocalDateTime } from '../../utils/date';
-import { SPECIALTIES } from '../../types/common';
+import { getSpecialtyLabel } from '../../types/common';
 
 export function PatientDashboard() {
     const { 
@@ -37,7 +37,7 @@ export function PatientDashboard() {
     }
 
     const nextAppointmentSpecialty = nextAppointment?.doctor.specialty 
-        ? SPECIALTIES.find(s => s.value === nextAppointment.doctor.specialty)?.label || nextAppointment.doctor.specialty
+        ? getSpecialtyLabel(nextAppointment.doctor.specialty)
         : null;
 
     return (

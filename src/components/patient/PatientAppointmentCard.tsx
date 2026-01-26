@@ -1,6 +1,6 @@
 import type { Appointment } from '../../types/entities';
 import { formatLocalDateTime } from '../../utils/date';
-import { SPECIALTIES } from '../../types/common';
+import { APPOINTMENT_STATUS_CONFIG, getSpecialtyLabel } from '../../types/common';
 
 interface PatientAppointmentCardProps {
     appointment: Appointment;
@@ -8,25 +8,9 @@ interface PatientAppointmentCardProps {
     showActions?: boolean;
 }
 
-const statusConfig = {
-    SCHEDULED: {
-        label: 'Agendada',
-        className: 'bg-primary-100 text-primary-700'
-    },
-    COMPLETED: {
-        label: 'Realizada',
-        className: 'bg-success-100 text-success-700'
-    },
-    CANCELLED: {
-        label: 'Cancelada',
-        className: 'bg-danger-100 text-danger-700'
-    }
-};
-
 export function PatientAppointmentCard({ appointment, onCancel, showActions = true }: PatientAppointmentCardProps) {
-    const status = statusConfig[appointment.status];
-    const specialtyLabel = SPECIALTIES.find(s => s.value === appointment.doctor.specialty)?.label 
-        || appointment.doctor.specialty;
+    const status = APPOINTMENT_STATUS_CONFIG[appointment.status];
+    const specialtyLabel = getSpecialtyLabel(appointment.doctor.specialty);
 
     const canCancel = appointment.status === 'SCHEDULED' && showActions;
 
@@ -55,7 +39,7 @@ export function PatientAppointmentCard({ appointment, onCancel, showActions = tr
 
                 {/* Status e Ações */}
                 <div className="flex items-center gap-3">
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${status.className}`}>
+                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${status.bgClass} ${status.textClass}`}>
                         {status.label}
                     </span>
 
