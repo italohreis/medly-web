@@ -9,7 +9,7 @@ import { DoctorDashboard } from './pages/doctor/DoctorDashboard';
 import { DoctorScheduleManagement } from './pages/doctor/DoctorScheduleManagement';
 import { DoctorAppointments } from './pages/doctor/DoctorAppointments';
 import { DoctorProfile } from './pages/doctor/DoctorProfile';
-import { PatientHome } from './pages/patient/PatientHome';
+import { PatientDashboard } from './pages/patient/PatientDashboard';
 import { PrivateRoute } from './components/PrivateRoute';
 import { ToastProvider } from './contexts/ToastContext';
 import { AuthProvider } from './contexts/AuthContext';
@@ -42,7 +42,7 @@ export default function App() {
 
             {/* Rotas de PATIENT */}
             <Route element={<PrivateRoute allowedRoles={['PATIENT']} />}>
-              <Route path="/patient" element={<PatientHome />} />
+              <Route path="/patient" element={<PatientDashboard />} />
             </Route>
 
             <Route path="*" element={<Navigate to="/" replace />} />
