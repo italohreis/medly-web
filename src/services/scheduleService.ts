@@ -1,6 +1,6 @@
 import { api } from './api';
 import type { AvailabilityWindow, TimeSlot } from '../types/entities';
-import type { PaginatedResponse } from '../types/common';
+import type { AvailabilityStatus, PaginatedResponse } from '../types/common';
 
 const getAvailabilityWindows = async (doctorId: string): Promise<PaginatedResponse<AvailabilityWindow>> => {
     const { data } = await api.get<PaginatedResponse<AvailabilityWindow>>('/schedule/windows', {
@@ -22,6 +22,11 @@ const createAvailabilityWindow = async (doctorId: string, window: Omit<Availabil
 
 const deleteAvailabilityWindow = async (id: string): Promise<void> => {
     await api.delete(`/schedule/windows/${id}`);
+};
+
+const updateTimeSlotStatus = async (id: string, status: AvailabilityStatus): Promise<TimeSlot> => {
+    const { data } = await api.patch<TimeSlot>(`/schedule/timeslots/${id}`, { status });
+    return data;
 };
 
 
@@ -46,5 +51,6 @@ export const scheduleService = {
     getAvailabilityWindows,
     createAvailabilityWindow,
     deleteAvailabilityWindow,
+    updateTimeSlotStatus,
     searchAvailableTimeSlots
 };

@@ -1,14 +1,10 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { DoctorLayout } from '../../components/layouts/DoctorLayout';
 import { Card } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
-import { useDoctorDashboard } from '../../hooks/useDoctorDashboard';
-import { 
-    DoctorStatCard, 
-    AvailabilityWindowCard, 
-    ScheduleModal,
-    type ScheduleFormData 
-} from '../../components/doctor';
+import { useDoctorSchedule } from '../../hooks/useDoctorSchedule';
+import { DoctorStatCard, ScheduleModal, type ScheduleFormData } from '../../components/doctor';
+import { WindowDetailCard } from '../../components/doctor/schedule';
 import { CalendarIcon, CheckIcon, ClockIcon, PlusIcon } from '../../components/icons';
 import type { AvailabilityWindow } from '../../types/entities';
 import { formatLocalDateFull, parseLocalDateTime } from '../../utils/date';
@@ -35,22 +31,31 @@ const countWindowsInNextWeek = (windows: AvailabilityWindow[]) => {
 };
 
 export function DoctorScheduleManagement() {
-    const { windows, loading, handleAddWindow, handleDeleteWindow } = useDoctorDashboard();
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isSubmitting, setIsSubmitting] = useState(false);
+    const { 
+        windows, 
+        loading, 
+        creating,
+        deletingId,
+        stats,
+        createWindow, 
+        deleteWindow,
+        updateTimeSlotStatus
+    } = useDoctorSchedule();
 
-    const groupedWindows = groupWindowsByDate(windows);
-    const windowsInNextWeek = countWindowsInNextWeek(windows);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const groupedWindows = useMemo(() => groupWindowsByDate(windows), [windows]);
+    const windowsInNextWeek = useMemo(() => countWindowsInNextWeek(windows), [windows]);
 
     const handleSubmit = async (data: ScheduleFormData) => {
-        setIsSubmitting(true);
-        try {
-            await handleAddWindow(data);
+        const success = await createWindow({
+            startTime: data.startTime,
+            endTime: data.endTime,
+            slotDurationInMinutes: data.slotDurationInMinutes
+        });
+        
+        if (success) {
             setIsModalOpen(false);
-        } catch (error) {
-            console.error('Erro ao adicionar horário:', error);
-        } finally {
-            setIsSubmitting(false);
         }
     };
 
@@ -77,38 +82,48 @@ export function DoctorScheduleManagement() {
                     </div>
                     <Button variant="primary" size="md" onClick={() => setIsModalOpen(true)}>
                         <PlusIcon />
-                        Novo Horário
+                        Nova Janela
                     </Button>
                 </div>
 
-                {/* Info Cards */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {/* Stats Cards */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                     <DoctorStatCard
                         title="Total de Janelas"
-                        value={windows.length}
+                        value={stats.totalWindows}
                         icon={<CalendarIcon />}
                         variant="gradient"
                     />
                     <DoctorStatCard
                         title="Próximos 7 dias"
                         value={windowsInNextWeek}
+                        icon={<ClockIcon />}
+                        variant="info"
+                    />
+                    <DoctorStatCard
+                        title="Slots Disponíveis"
+                        value={stats.availableSlots}
                         icon={<CheckIcon />}
                         variant="success"
                     />
                     <DoctorStatCard
-                        title="Dias Configurados"
-                        value={Object.keys(groupedWindows).length}
-                        icon={<ClockIcon />}
-                        variant="info"
+                        title="Slots Agendados"
+                        value={stats.bookedSlots}
+                        icon={
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                            </svg>
+                        }
+                        variant="warning"
                     />
                 </div>
 
-                {/* Lista de Horários */}
+                {/* Lista de Janelas */}
                 <Card padding="none" className="overflow-hidden">
                     <div className="p-6 border-b border-medical-100">
-                        <h2 className="text-lg font-bold text-medical-900">Horários Configurados</h2>
+                        <h2 className="text-lg font-bold text-medical-900">Janelas de Disponibilidade</h2>
                         <p className="text-sm text-medical-500 mt-1">
-                            Seus horários disponíveis para agendamento de consultas
+                            Clique em uma janela para ver e gerenciar os horários individuais
                         </p>
                     </div>
 
@@ -119,13 +134,15 @@ export function DoctorScheduleManagement() {
                                     <CalendarIcon />
                                 </span>
                             </div>
-                            <h3 className="text-lg font-medium text-medical-900 mb-2">Nenhum horário configurado</h3>
+                            <h3 className="text-lg font-medium text-medical-900 mb-2">
+                                Nenhuma janela configurada
+                            </h3>
                             <p className="text-medical-500 mb-6">
-                                Comece adicionando seus horários de disponibilidade para que os pacientes possam agendar consultas.
+                                Comece adicionando suas janelas de disponibilidade para que os pacientes possam agendar consultas.
                             </p>
                             <Button variant="primary" size="md" onClick={() => setIsModalOpen(true)}>
                                 <PlusIcon />
-                                Adicionar Primeiro Horário
+                                Adicionar Primeira Janela
                             </Button>
                         </div>
                     ) : (
@@ -137,13 +154,18 @@ export function DoctorScheduleManagement() {
                                             <CalendarIcon />
                                         </span>
                                         {date}
+                                        <span className="ml-auto text-xs font-normal text-medical-400 normal-case">
+                                            {dateWindows.length} janela{dateWindows.length !== 1 ? 's' : ''}
+                                        </span>
                                     </h3>
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                    <div className="space-y-4">
                                         {dateWindows.map((win, idx) => (
-                                            <AvailabilityWindowCard
+                                            <WindowDetailCard
                                                 key={win.id || idx}
                                                 window={win}
-                                                onDelete={handleDeleteWindow}
+                                                onDelete={deleteWindow}
+                                                onToggleSlotStatus={updateTimeSlotStatus}
+                                                isDeleting={deletingId === win.id}
                                             />
                                         ))}
                                     </div>
@@ -158,7 +180,7 @@ export function DoctorScheduleManagement() {
                     isOpen={isModalOpen}
                     onClose={() => setIsModalOpen(false)}
                     onSubmit={handleSubmit}
-                    isSubmitting={isSubmitting}
+                    isSubmitting={creating}
                 />
             </div>
         </DoctorLayout>

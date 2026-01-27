@@ -36,7 +36,9 @@ export function useBookAppointment() {
                 endDate: filters.endDate
             });
 
-            const availableSlots = response.content.filter(slot => slot.status === 'AVAILABLE');
+            const availableSlots = response.content
+                .filter(slot => slot.status === 'AVAILABLE')
+                .sort((a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime());
             setTimeSlots(availableSlots);
 
             if (availableSlots.length === 0) {

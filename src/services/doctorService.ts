@@ -1,6 +1,7 @@
 import { api } from './api';
 import type { Doctor } from '../types/entities';
 import type { PaginatedResponse } from '../types/common';
+import type { DoctorUpdateData } from '../types/entities';
 
 interface GetDoctorsParams {
     page?: number;
@@ -28,7 +29,7 @@ const createDoctor = async (doctor: Omit<Doctor, 'id'>): Promise<Doctor> => {
     return data;
 };
 
-const updateDoctor = async (id: string, doctor: Partial<Pick<Doctor, 'name' | 'email' | 'specialty'>>): Promise<Doctor> => {
+const updateDoctor = async (id: string, doctor: DoctorUpdateData): Promise<Doctor> => {
     const { data } = await api.put<Doctor>(`/doctors/${id}`, doctor);
     return data;
 };
