@@ -1,6 +1,7 @@
 import { api } from './api';
 import type { Patient } from '../types/entities';
 import type { PaginatedResponse } from '../types/common';
+import type { UpdatePatientData } from '../types/entities';
 
 interface GetPatientsParams {
     page?: number;
@@ -21,7 +22,13 @@ const getPatientById = async (id: string): Promise<Patient> => {
     return data;
 };
 
+const updatePatient = async (id: string, updateData: UpdatePatientData): Promise<Patient> => {
+    const { data } = await api.put<Patient>(`/patients/${id}`, updateData);
+    return data;
+};
+
 export const patientService = {
     getPatients,
-    getPatientById
+    getPatientById,
+    updatePatient
 };

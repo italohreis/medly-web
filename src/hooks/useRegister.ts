@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { authService } from '../services/authService';
 import { AxiosError } from 'axios';
+import { maskCPF } from '../utils/masks';
 
 export interface RegisterFormData {
     name: string;
@@ -21,8 +22,20 @@ export function useRegister() {
         register,
         handleSubmit,
         formState: { errors, isSubmitting },
-        getValues
+        getValues,
+        watch,
+        setValue
     } = useForm<RegisterFormData>();
+
+    const cpfValue = watch('cpf');
+    useEffect(() => {
+        if (cpfValue) {
+            const masked = maskCPF(cpfValue);
+            if (masked !== cpfValue) {
+                setValue('cpf', masked, { shouldValidate: false });
+            }
+        }
+    }, [cpfValue, setValue]);
 
     const handleRegister = async (data: RegisterFormData) => {
         setApiError('');

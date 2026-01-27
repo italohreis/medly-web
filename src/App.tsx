@@ -12,6 +12,7 @@ import { DoctorProfile } from './pages/doctor/DoctorProfile';
 import { PatientDashboard } from './pages/patient/PatientDashboard';
 import { PatientAppointments } from './pages/patient/PatientAppointments';
 import { PatientBooking } from './pages/patient/PatientBooking';
+import { PatientProfile } from './pages/patient/PatientProfile';
 import { PrivateRoute } from './components/PrivateRoute';
 import { ToastProvider } from './contexts/ToastContext';
 import { AuthProvider } from './contexts/AuthContext';
@@ -47,6 +48,7 @@ export default function App() {
               <Route path="/patient" element={<PatientDashboard />} />
               <Route path="/patient/appointments" element={<PatientAppointments />} />
               <Route path="/patient/book" element={<PatientBooking />} />
+              <Route path="/patient/profile" element={<PatientProfile />} />
             </Route>
 
             <Route path="*" element={<Navigate to="/" replace />} />

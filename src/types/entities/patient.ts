@@ -11,3 +11,10 @@ export interface Patient {
     cpf?: string;
     birthDate?: string;
 }
+
+export interface UpdatePatientData {
+    name?: string;
+    email?: string;
+    cpf?: string;
+    birthDate?: string;
+}
