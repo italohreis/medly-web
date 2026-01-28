@@ -3,12 +3,7 @@ import { doctorService } from '../services/doctorService';
 import { useAuth } from './useAuth';
 import { useToast } from './useToast';
 import type { Doctor } from '../types/entities';
-
-interface DoctorProfileUpdateData {
-    name?: string;
-    email?: string;
-    specialty?: string;
-}
+import type { DoctorUpdateData } from '../types/entities';
 
 interface UseDoctorProfileReturn {
     doctor: Doctor | null;
@@ -16,7 +11,7 @@ interface UseDoctorProfileReturn {
     updating: boolean;
     error: string | null;
     fetchProfile: () => Promise<void>;
-    updateProfile: (data: DoctorProfileUpdateData) => Promise<boolean>;
+    updateProfile: (data: DoctorUpdateData) => Promise<boolean>;
 }
 
 export function useDoctorProfile(): UseDoctorProfileReturn {
@@ -54,7 +49,7 @@ export function useDoctorProfile(): UseDoctorProfileReturn {
         }
     }, [doctorId, showToast]);
 
-    const updateProfile = async (data: DoctorProfileUpdateData): Promise<boolean> => {
+    const updateProfile = async (data: DoctorUpdateData): Promise<boolean> => {
         if (!doctorId) {
             showToast('ID do médico não encontrado.', 'error');
             return false;

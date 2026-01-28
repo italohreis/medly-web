@@ -10,22 +10,22 @@ export function usePatientsList(pageSize: number = 10) {
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(0);
 
-    useEffect(() => {
-        async function fetchPatients() {
-            setLoading(true);
-            try {
-                const response = await patientService.getPatients({ page: currentPage, size: pageSize });
-                setData(response);
-            } catch (error) {
-                console.error('Erro ao carregar pacientes', error);
-                showToast('Não foi possível carregar a lista de pacientes.', 'error');
-            } finally {
-                setLoading(false);
-            }
+    const fetchPatients = async () => {
+        setLoading(true);
+        try {
+            const response = await patientService.getPatients({ page: currentPage, size: pageSize });
+            setData(response);
+        } catch (error) {
+            console.error('Erro ao carregar pacientes', error);
+            showToast('Não foi possível carregar a lista de pacientes.', 'error');
+        } finally {
+            setLoading(false);
         }
+    };
 
+    useEffect(() => {
         fetchPatients();
-    }, [currentPage, pageSize, showToast]);
+    }, [currentPage, pageSize]);
 
     return {
         patients: data?.content || [],
@@ -33,6 +33,7 @@ export function usePatientsList(pageSize: number = 10) {
         totalElements: data?.page?.totalElements || 0,
         currentPage,
         loading,
-        setCurrentPage
+        setCurrentPage,
+        refetch: fetchPatients
     };
 }

@@ -35,9 +35,6 @@ export function DoctorsTable({ doctors, loading }: DoctorsTableProps) {
                             <th className="px-6 py-3 text-left text-xs font-semibold text-medical-700 uppercase">
                                 CRM
                             </th>
-                            <th className="px-6 py-3 text-right text-xs font-semibold text-medical-700 uppercase">
-                                Ação
-                            </th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-medical-200">
@@ -53,12 +50,11 @@ export function DoctorsTable({ doctors, loading }: DoctorsTableProps) {
                                     <td className="px-6 py-4">
                                         <div className="h-4 bg-medical-200 rounded w-16"></div>
                                     </td>
-                                    <td className="px-6 py-4"></td>
                                 </tr>
                             ))
                         ) : doctors.length === 0 ? (
                             <tr>
-                                <td colSpan={4} className="px-6 py-8 text-center text-medical-500">
+                                <td colSpan={3} className="px-6 py-8 text-center text-medical-500">
                                     Nenhum médico encontrado.
                                 </td>
                             </tr>
@@ -71,7 +67,7 @@ export function DoctorsTable({ doctors, loading }: DoctorsTableProps) {
                                                 {doc.name.charAt(0)}
                                             </div>
                                             <span className="text-sm font-medium text-medical-900">
-                                                {doc.name}
+                                                Dr(a). {doc.name}
                                             </span>
                                         </div>
                                     </td>
@@ -81,9 +77,6 @@ export function DoctorsTable({ doctors, loading }: DoctorsTableProps) {
                                         </span>
                                     </td>
                                     <td className="px-6 py-4 text-sm text-medical-600">{doc.crm}</td>
-                                    <td className="px-6 py-4 text-right">
-                                        <span className="text-medical-500 text-sm">-</span>
-                                    </td>
                                 </tr>
                             ))
                         )}

@@ -4,18 +4,7 @@ import { Card } from '../../components/ui/Card';
 import { Pagination } from '../../components/ui/Pagination';
 import { useAppointmentsList } from '../../hooks/useAppointmentsList';
 import { formatLocalDate, formatLocalTime } from '../../utils/date';
-
-const statusColors = {
-    SCHEDULED: 'bg-info-100 text-info-700',
-    CANCELLED: 'bg-danger-100 text-danger-700',
-    COMPLETED: 'bg-success-100 text-success-700'
-};
-
-const statusLabels = {
-    SCHEDULED: 'Agendada',
-    CANCELLED: 'Cancelada',
-    COMPLETED: 'Concluída'
-};
+import { APPOINTMENT_STATUS_CONFIG } from '../../types/common';
 
 export function AppointmentsList() {
     const { appointments, totalPages, totalElements, currentPage, loading, setCurrentPage } = useAppointmentsList(10);
@@ -58,9 +47,6 @@ export function AppointmentsList() {
                                     <th className="px-6 py-3 text-left text-xs font-semibold text-medical-700 uppercase">
                                         Status
                                     </th>
-                                    <th className="px-6 py-3 text-right text-xs font-semibold text-medical-700 uppercase">
-                                        Ação
-                                    </th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-medical-200">
@@ -71,12 +57,11 @@ export function AppointmentsList() {
                                             <td className="px-6 py-4"><div className="h-4 bg-medical-200 rounded w-32"></div></td>
                                             <td className="px-6 py-4"><div className="h-4 bg-medical-200 rounded w-24"></div></td>
                                             <td className="px-6 py-4"><div className="h-4 bg-medical-200 rounded w-20"></div></td>
-                                            <td className="px-6 py-4"></td>
                                         </tr>
                                     ))
                                 ) : appointments.length === 0 ? (
                                     <tr>
-                                        <td colSpan={5} className="px-6 py-12 text-center">
+                                        <td colSpan={4} className="px-6 py-12 text-center">
                                             <div className="flex flex-col items-center">
                                                 <svg className="w-12 h-12 text-medical-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -87,46 +72,44 @@ export function AppointmentsList() {
                                         </td>
                                     </tr>
                                 ) : (
-                                    appointments.map((appointment) => (
-                                        <tr key={appointment.id} className="hover:bg-medical-50 transition-colors">
-                                            <td className="px-6 py-4">
-                                                <div className="flex items-center">
-                                                    <div className="h-10 w-10 rounded-full bg-success-100 flex items-center justify-center text-success-700 font-bold text-sm mr-3">
-                                                        {appointment.patient.name.charAt(0)}
+                                    appointments.map((appointment) => {
+                                        const statusConfig = APPOINTMENT_STATUS_CONFIG[appointment.status];
+                                        return (
+                                            <tr key={appointment.id} className="hover:bg-medical-50 transition-colors">
+                                                <td className="px-6 py-4">
+                                                    <div className="flex items-center">
+                                                        <div className="h-10 w-10 rounded-full bg-success-100 flex items-center justify-center text-success-700 font-bold text-sm mr-3">
+                                                            {appointment.patient.name.charAt(0)}
+                                                        </div>
+                                                        <span className="text-sm font-medium text-medical-900">
+                                                            {appointment.patient.name}
+                                                        </span>
                                                     </div>
-                                                    <span className="text-sm font-medium text-medical-900">
-                                                        {appointment.patient.name}
+                                                </td>
+                                                <td className="px-6 py-4">
+                                                    <div>
+                                                        <p className="text-sm font-medium text-medical-900">Dr(a). {appointment.doctor.name}</p>
+                                                        <p className="text-xs text-medical-500">{appointment.doctor.crm}</p>
+                                                    </div>
+                                                </td>
+                                                <td className="px-6 py-4 text-sm text-medical-600">
+                                                    <div>
+                                                        <p className="font-medium">
+                                                            {formatLocalDate(appointment.startTime)}
+                                                        </p>
+                                                        <p className="text-xs text-medical-500">
+                                                            {formatLocalTime(appointment.startTime)} - {formatLocalTime(appointment.endTime)}
+                                                        </p>
+                                                    </div>
+                                                </td>
+                                                <td className="px-6 py-4">
+                                                    <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${statusConfig.bgClass} ${statusConfig.textClass}`}>
+                                                        {statusConfig.label}
                                                     </span>
-                                                </div>
-                                            </td>
-                                            <td className="px-6 py-4">
-                                                <div>
-                                                    <p className="text-sm font-medium text-medical-900">{appointment.doctor.name}</p>
-                                                    <p className="text-xs text-medical-500">{appointment.doctor.crm}</p>
-                                                </div>
-                                            </td>
-                                            <td className="px-6 py-4 text-sm text-medical-600">
-                                                <div>
-                                                    <p className="font-medium">
-                                                        {formatLocalDate(appointment.startTime)}
-                                                    </p>
-                                                    <p className="text-xs text-medical-500">
-                                                        {formatLocalTime(appointment.startTime)} - {formatLocalTime(appointment.endTime)}
-                                                    </p>
-                                                </div>
-                                            </td>
-                                            <td className="px-6 py-4">
-                                                <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${statusColors[appointment.status]}`}>
-                                                    {statusLabels[appointment.status]}
-                                                </span>
-                                            </td>
-                                            <td className="px-6 py-4 text-right">
-                                                <button className="text-primary-600 hover:text-primary-700 font-medium text-sm">
-                                                    Ver detalhes
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    ))
+                                                </td>
+                                            </tr>
+                                        );
+                                    })
                                 )}
                             </tbody>
                         </table>

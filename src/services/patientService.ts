@@ -27,8 +27,13 @@ const updatePatient = async (id: string, updateData: UpdatePatientData): Promise
     return data;
 };
 
+const deletePatient = async (id: string): Promise<void> => {
+    await api.delete(`/patients/${id}`);
+};
+
 export const patientService = {
     getPatients,
     getPatientById,
-    updatePatient
+    updatePatient,
+    deletePatient
 };

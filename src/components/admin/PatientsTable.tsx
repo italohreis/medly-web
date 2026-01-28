@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Card, CardHeader, CardTitle } from '../ui/Card';
 import type { Patient } from '../../types/entities';
+import { maskCPF } from '../../utils/masks';
 
 interface PatientsTableProps {
     patients: Patient[];
@@ -33,10 +34,7 @@ export function PatientsTable({ patients, loading }: PatientsTableProps) {
                                 Email
                             </th>
                             <th className="px-6 py-3 text-left text-xs font-semibold text-medical-700 uppercase">
-                                Telefone
-                            </th>
-                            <th className="px-6 py-3 text-right text-xs font-semibold text-medical-700 uppercase">
-                                Ação
+                                CPF
                             </th>
                         </tr>
                     </thead>
@@ -51,14 +49,13 @@ export function PatientsTable({ patients, loading }: PatientsTableProps) {
                                         <div className="h-4 bg-medical-200 rounded w-40"></div>
                                     </td>
                                     <td className="px-6 py-4">
-                                        <div className="h-4 bg-medical-200 rounded w-24"></div>
+                                        <div className="h-4 bg-medical-200 rounded w-28"></div>
                                     </td>
-                                    <td className="px-6 py-4"></td>
                                 </tr>
                             ))
                         ) : patients.length === 0 ? (
                             <tr>
-                                <td colSpan={4} className="px-6 py-8 text-center text-medical-500">
+                                <td colSpan={3} className="px-6 py-8 text-center text-medical-500">
                                     Nenhum paciente encontrado.
                                 </td>
                             </tr>
@@ -78,16 +75,8 @@ export function PatientsTable({ patients, loading }: PatientsTableProps) {
                                     <td className="px-6 py-4 text-sm text-medical-600">
                                         {patient.email}
                                     </td>
-                                    <td className="px-6 py-4 text-sm text-medical-600">
-                                        {patient.phone || '-'}
-                                    </td>
-                                    <td className="px-6 py-4 text-right">
-                                        <Link
-                                            to={`/admin/patients/${patient.id}`}
-                                            className="text-primary-600 hover:text-primary-700 font-medium text-sm"
-                                        >
-                                            Ver detalhes
-                                        </Link>
+                                    <td className="px-6 py-4 text-sm text-medical-600 font-mono">
+                                        {patient.cpf ? maskCPF(patient.cpf) : '-'}
                                     </td>
                                 </tr>
                             ))

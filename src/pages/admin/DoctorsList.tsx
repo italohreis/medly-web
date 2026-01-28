@@ -4,10 +4,12 @@ import { DashboardLayout } from '../../components/layouts/DashboardLayout';
 import { Card } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
 import { Pagination } from '../../components/ui/Pagination';
+import { ConfirmationModal } from '../../components/ui/ConfirmationModal';
 import { DoctorModal, type DoctorFormData } from '../../components/admin/DoctorModal';
 import { useDoctorsList } from '../../hooks/useDoctorsList';
 import { doctorService } from '../../services/doctorService';
 import { useToast } from '../../hooks/useToast';
+import type { Doctor } from '../../types/entities';
 
 export function DoctorsList() {
     const { doctors, totalPages, totalElements, currentPage, loading, setCurrentPage, refetch } = useDoctorsList(10);
@@ -15,6 +17,8 @@ export function DoctorsList() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [editingDoctor, setEditingDoctor] = useState<typeof doctors[0] | null>(null);
+    const [doctorToDelete, setDoctorToDelete] = useState<Doctor | null>(null);
+    const [isDeleting, setIsDeleting] = useState(false);
 
     const handleCreateDoctor = async (data: DoctorFormData) => {
         setIsSubmitting(true);
@@ -53,16 +57,19 @@ export function DoctorsList() {
         }
     };
 
-    const handleDeleteDoctor = async (id: string, name: string) => {
-        if (!confirm(`Tem certeza que deseja excluir o médico ${name}?`)) return;
-
+    const handleDeleteDoctor = async () => {
+        if (!doctorToDelete) return;
+        setIsDeleting(true);
         try {
-            await doctorService.deleteDoctor(id);
+            await doctorService.deleteDoctor(String(doctorToDelete.id));
             showToast('Médico excluído com sucesso!', 'success');
+            setDoctorToDelete(null);
             refetch();
         } catch (error) {
             console.error('Erro ao excluir médico:', error);
             showToast('Erro ao excluir médico. Tente novamente.', 'error');
+        } finally {
+            setIsDeleting(false);
         }
     };
 
@@ -179,10 +186,13 @@ export function DoctorsList() {
                                                         Editar
                                                     </button>
                                                     <button
-                                                        onClick={() => handleDeleteDoctor(String(doctor.id), doctor.name)}
-                                                        className="text-red-600 hover:text-red-700 font-medium text-sm"
+                                                        onClick={() => setDoctorToDelete(doctor)}
+                                                        className="p-2 text-danger-600 hover:text-danger-700 hover:bg-danger-50 rounded-lg transition-colors"
+                                                        title="Excluir médico"
                                                     >
-                                                        Excluir
+                                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                        </svg>
                                                     </button>
                                                 </div>
                                             </td>
@@ -210,6 +220,18 @@ export function DoctorsList() {
                 doctor={editingDoctor || undefined}
                 isEditMode={!!editingDoctor}
                 loading={isSubmitting}
+            />
+
+            <ConfirmationModal
+                isOpen={!!doctorToDelete}
+                onClose={() => setDoctorToDelete(null)}
+                onConfirm={handleDeleteDoctor}
+                title="Excluir Médico"
+                message={`Tem certeza que deseja excluir o médico Dr(a). ${doctorToDelete?.name}? Esta ação não pode ser desfeita.`}
+                confirmText="Excluir"
+                cancelText="Cancelar"
+                variant="danger"
+                isLoading={isDeleting}
             />
         </DashboardLayout>
     );
