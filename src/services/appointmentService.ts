@@ -8,6 +8,8 @@ interface GetAppointmentsParams {
     doctorId?: string;
     patientId?: string;
     status?: string;
+    startDate?: string;
+    endDate?: string;
 }
 
 const getAppointments = async (params: GetAppointmentsParams = {}): Promise<PaginatedResponse<Appointment>> => {
@@ -38,10 +40,15 @@ const cancelAppointment = async (id: string): Promise<Appointment> => {
     return data;
 };
 
+const deleteAppointment = async (id: string): Promise<void> => {
+    await api.delete(`/appointments/${id}`);
+};
+
 export const appointmentService = {
     getAppointments,
     getAppointmentById,
     createAppointment,
     completeAppointment,
-    cancelAppointment
+    cancelAppointment,
+    deleteAppointment
 };

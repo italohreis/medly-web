@@ -5,7 +5,13 @@ import type { Appointment, AvailabilityWindow } from '../types/entities';
 import { useAuth } from './useAuth';
 import { useToast } from './useToast';
 
-export function useDoctorDashboard() {
+interface UseDoctorDashboardOptions {
+  startDate?: string;
+  endDate?: string;
+}
+
+export function useDoctorDashboard(options: UseDoctorDashboardOptions = {}) {
+  const { startDate, endDate } = options;
   const { user } = useAuth();
   const { showToast } = useToast();
 
@@ -24,7 +30,11 @@ export function useDoctorDashboard() {
     try {
       setLoading(true);
       const [appointmentsRes, windowsRes] = await Promise.all([
-        appointmentService.getAppointments({ doctorId }),
+        appointmentService.getAppointments({
+          doctorId,
+          startDate: startDate || undefined,
+          endDate: endDate || undefined,
+        }),
         scheduleService.getAvailabilityWindows(doctorId)
       ]);
 
@@ -37,7 +47,7 @@ export function useDoctorDashboard() {
     } finally {
       setLoading(false);
     }
-  }, [doctorId, showToast]);
+  }, [doctorId, startDate, endDate, showToast]);
 
   const handleStatusChange = async (appointmentId: string, newStatus: 'COMPLETED' | 'CANCELLED') => {
     try {

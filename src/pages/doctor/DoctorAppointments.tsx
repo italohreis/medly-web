@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { DoctorLayout } from '../../components/layouts/DoctorLayout';
 import { Button } from '../../components/ui/Button';
+import { Input } from '../../components/ui/Input';
+import { Card } from '../../components/ui/Card';
 import { Pagination } from '../../components/ui/Pagination';
 import { useDoctorDashboard } from '../../hooks/useDoctorDashboard';
 import {  
@@ -12,10 +14,16 @@ import { StatusFilter, type FilterStatus } from '../../components/ui/StatusFilte
 const ITEMS_PER_PAGE = 10;
 
 export function DoctorAppointments() {
-    const { appointments, loading, handleStatusChange, refetch } = useDoctorDashboard();
     const [statusFilter, setStatusFilter] = useState<FilterStatus>('ALL');
     const [currentPage, setCurrentPage] = useState(0);
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
+
+    const { appointments, loading, handleStatusChange, refetch } = useDoctorDashboard({
+        startDate: startDate || undefined,
+        endDate: endDate || undefined,
+    });
 
     const filteredAppointments = statusFilter === 'ALL'
         ? appointments
@@ -73,12 +81,39 @@ export function DoctorAppointments() {
                     </Button>
                 </div>
 
-                {/* Filtros por Status */}
-                <StatusFilter
-                    currentFilter={statusFilter}
-                    onFilterChange={handleFilterChange}
-                    counts={statusCounts}
-                />
+                {/* Filtros */}
+                <Card>
+                    <div className="space-y-4">
+                        <StatusFilter
+                            currentFilter={statusFilter}
+                            onFilterChange={handleFilterChange}
+                            counts={statusCounts}
+                        />
+                        <div className="flex flex-wrap items-end gap-4">
+                            <div className="w-48">
+                                <Input
+                                    type="date"
+                                    label="Data início"
+                                    value={startDate}
+                                    onChange={(e) => { setStartDate(e.target.value); setCurrentPage(0); }}
+                                />
+                            </div>
+                            <div className="w-48">
+                                <Input
+                                    type="date"
+                                    label="Data fim"
+                                    value={endDate}
+                                    onChange={(e) => { setEndDate(e.target.value); setCurrentPage(0); }}
+                                />
+                            </div>
+                            {(startDate || endDate) && (
+                                <Button variant="ghost" size="sm" onClick={() => { setStartDate(''); setEndDate(''); setCurrentPage(0); }}>
+                                    Limpar datas
+                                </Button>
+                            )}
+                        </div>
+                    </div>
+                </Card>
 
                 {/* Lista de Consultas */}
                 {filteredAppointments.length === 0 ? (
