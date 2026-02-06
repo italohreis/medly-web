@@ -1,73 +1,52 @@
-# React + TypeScript + Vite
+# Medly Web
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Interface web para o sistema de agendamento de consultas médicas Medly.
 
-Currently, two official plugins are available:
+> Consome a API [medly-api](https://github.com/italohreis/medly-api).
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Tecnologias
 
-## React Compiler
+- React, TypeScript, Vite
+- TailwindCSS
+- Axios
+- React Router DOM
+- Lucide React
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Pré-requisitos
 
-## Expanding the ESLint configuration
+- Node.js
+- Backend (`medly-api`) rodando na porta `8080`
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Como Rodar
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Disponível em `http://localhost:5173`.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Proxy da API
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Configurado em `vite.config.ts`. Requisições para `/api` são redirecionadas para `http://localhost:8080`.
+
+## Estrutura
+
 ```
+src/
+├── pages/          # Telas por perfil (admin, doctor, patient, auth)
+├── components/     # Componentes reutilizáveis e específicos por módulo
+├── contexts/       # Estado global (Auth, Toast)
+├── hooks/          # Custom hooks
+├── services/       # Integração com a API (Axios)
+├── types/          # Interfaces TypeScript
+└── utils/          # Funções utilitárias
+```
+
+## Funcionalidades
+
+- **Auth:** Login (JWT) e registro de pacientes
+- **Admin:** Cadastro de médicos, gestão de pacientes e consultas
+- **Médico:** Janelas de disponibilidade e controle de consultas
+- **Paciente:** Busca de horários, agendamento e cancelamento
+
