@@ -71,8 +71,9 @@ export function useDoctorDashboard(options: UseDoctorDashboardOptions = {}) {
       await scheduleService.createAvailabilityWindow(doctorId, data);
       showToast('Nova janela de horário criada.', 'success');
       fetchDashboardData();
-    } catch {
-      showToast('Conflito de horários ou dados inválidos.', 'error');
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Conflito de horários ou dados inválidos.';
+      showToast(message, 'error');
     }
   };
 

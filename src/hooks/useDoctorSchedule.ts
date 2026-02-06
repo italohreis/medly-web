@@ -68,7 +68,8 @@ export function useDoctorSchedule() {
             return true;
         } catch (error) {
             console.error('Erro ao criar janela:', error);
-            showToast('Erro ao criar janela de disponibilidade.', 'error');
+            const message = error instanceof Error ? error.message : 'Erro ao criar janela de disponibilidade.';
+            showToast(message, 'error');
             return false;
         } finally {
             setCreating(false);
